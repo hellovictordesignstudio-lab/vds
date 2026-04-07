@@ -1,0 +1,11 @@
+{
+  "name": "@vds/tokens",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "node style-dictionary.config.mjs"
+  },
+  "devDependencies": {
+    "style-dictionary": "^4.0.0"
+  }
+}
