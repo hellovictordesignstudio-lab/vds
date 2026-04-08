@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { GitHubStarButton } from './GitHubStarButton';
 import { LangToggle } from './LangToggle';
 import { ThemeToggle } from './ThemeToggle';
 
@@ -14,14 +15,7 @@ export default function Header() {
         <div className="docs-header__actions">
           <ThemeToggle />
           <LangToggle />
-          <a
-            className="docs-header__github"
-            href="https://github.com/hellovictordesignstudio-lab/vds"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub
-          </a>
+          <GitHubStarButton />
         </div>
       </div>
     </header>
