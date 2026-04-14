@@ -30,12 +30,12 @@
 
   /* Primitives — brand */
   --color-primitive-brand-navy-default: #002b49;
-  --color-primitive-brand-navy-hover: #003d69;
-  --color-primitive-brand-navy-active: #001a33;
+  --color-primitive-brand-navy-hover: #001e35;
+  --color-primitive-brand-navy-active: #001528;
   --color-primitive-brand-blue-default: #1565A8;
-  --color-primitive-brand-blue-hover: #1A72BC;
+  --color-primitive-brand-blue-hover: #3A85C0;
   --color-primitive-brand-blue-text: #5B9FD4;
-  --color-primitive-brand-blue-border: #3A7DAE;
+  --color-primitive-brand-blue-border: #3A85C0;
 
   /* Primitives — status */
   --color-primitive-green-50: #E6F5EE;
@@ -59,8 +59,8 @@
 
   /* Semantic — bg fill */
   --color-bg-fill-primary-default: #002b49;
-  --color-bg-fill-primary-hover: #003d69;
-  --color-bg-fill-primary-active: #001a33;
+  --color-bg-fill-primary-hover: #001e35;
+  --color-bg-fill-primary-active: #001528;
   --color-bg-fill-primary-disabled: #C5CBDA;
   --color-bg-fill-secondary-default: transparent;
   --color-bg-fill-secondary-hover: #F8F9FC;
@@ -80,7 +80,7 @@
   --color-text-tertiary-disabled: #C5CBDA;
   --color-text-inverse-default: #FFFFFF;
   --color-text-brand-default: #002b49;
-  --color-text-brand-hover: #003d69;
+  --color-text-brand-hover: #001e35;
   --color-text-brand-disabled: #9BA5BE;
   --color-text-success-default: #0A8853;
   --color-text-danger-default: #D22232;
@@ -92,7 +92,7 @@
   --color-border-strong-default: #C5CBDA;
   --color-border-strong-hover: #9BA5BE;
   --color-border-brand-default: #002b49;
-  --color-border-brand-hover: #003d69;
+  --color-border-brand-hover: #001e35;
   --color-border-brand-focus: #002b49;
   --color-border-success-default: #0A8853;
   --color-border-danger-default: #D22232;
@@ -107,7 +107,7 @@
   --color-icon-tertiary-default: #9BA5BE;
   --color-icon-inverse-default: #FFFFFF;
   --color-icon-brand-default: #002b49;
-  --color-icon-brand-hover: #003d69;
+  --color-icon-brand-hover: #001e35;
   --color-icon-success-default: #0A8853;
   --color-icon-danger-default: #D22232;
   --color-icon-warning-default: #F07332;
@@ -168,7 +168,7 @@
   --blue-400: var(--color-primitive-blue-400);
   --blue-500: var(--color-primitive-brand-navy-default);
   --blue-600: var(--color-primitive-brand-navy-hover);
-  --blue-700: #001e33;
+  --blue-700: var(--color-primitive-brand-navy-active);
   --blue-800: #001727;
   --blue-900: #000f1a;
   --neutral-0: var(--color-primitive-neutral-0);
@@ -224,7 +224,7 @@
   Dark mode interactive brand (mathematically verified on #0F1117):
   #1565A8  → --color-brand       (button fill)  white text: 5.6:1 ✓ AA
   #5B9FD4  → --color-brand-text  (text/icons)   on dark bg: 7.4:1 ✓ AAA
-  #3A7DAE  → --color-brand-border (borders)     on dark bg: 4.8:1 ✓ AA
+  #3A85C0  → --color-brand-border (borders)     on dark bg: 4.8:1 ✓ AA
 
   Same visual family as #002b49. Same brand. Two expressions.
   Rule: if the bg is dark, use brand-text/border. Never use #002b49 as foreground on dark.
@@ -239,7 +239,7 @@
   --color-bg-surface-inverse-default: #F8F9FC;
 
   --color-bg-fill-primary-default: #1565A8;
-  --color-bg-fill-primary-hover: #1A72BC;
+  --color-bg-fill-primary-hover: #3A85C0;
   --color-bg-fill-primary-active: #0F4F85;
   --color-bg-fill-primary-disabled: #2E3550;
   --color-bg-fill-secondary-hover: #1E2435;
@@ -267,9 +267,9 @@
   --color-border-default-hover: rgba(255,255,255,0.14);
   --color-border-strong-default: rgba(255,255,255,0.14);
   --color-border-strong-hover: rgba(255,255,255,0.25);
-  --color-border-brand-default: #3A7DAE;
-  --color-border-brand-hover: #4D8FBE;
-  --color-border-brand-focus: #3A7DAE;
+  --color-border-brand-default: #3A85C0;
+  --color-border-brand-hover: #85B4DC;
+  --color-border-brand-focus: #3A85C0;
   --color-border-success-default: #0A8853;
   --color-border-danger-default: #D22232;
   --color-border-warning-default: #F07332;

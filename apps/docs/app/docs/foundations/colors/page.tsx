@@ -36,24 +36,26 @@ function labelColorForBg(hex: string): string {
   return relativeLuminance(hex) > 0.4 ? '#0A0A0A' : '#FFFFFF';
 }
 
+/** Navy ramp — matches `color.primitive.brand.navy` in packages/tokens/src/tokens.json. */
 const BRAND_SCALE: {
   hex: string;
   name: string;
   token?: string;
   isIdentity?: boolean;
 }[] = [
-  { hex: '#EBF2F7', name: 'navy/50' },
-  { hex: '#C8DBE9', name: 'navy/100' },
-  { hex: '#97BCE0', name: 'navy/200' },
-  { hex: '#5B9FD4', name: 'navy/300', token: 'brand-text-dark' },
-  { hex: '#3A7DAE', name: 'navy/400', token: 'brand-border-dark' },
-  { hex: '#1E5A8A', name: 'navy/500' },
-  { hex: '#1565A8', name: 'navy/600', token: 'brand-dark' },
-  { hex: '#003d69', name: 'navy/700', token: 'brand-hover' },
-  { hex: '#002b49', name: 'navy/800', token: 'brand / identity', isIdentity: true },
-  { hex: '#001A2E', name: 'navy/900' },
+  { hex: '#E6EDF2', name: 'navy/50' },
+  { hex: '#C0D3E0', name: 'navy/100' },
+  { hex: '#8BAFC6', name: 'navy/200' },
+  { hex: '#5A8BAD', name: 'navy/300' },
+  { hex: '#2E6A94', name: 'navy/400' },
+  { hex: '#002b49', name: 'navy/500', token: 'identity / default', isIdentity: true },
+  { hex: '#001e35', name: 'navy/600', token: 'hover (light)' },
+  { hex: '#001528', name: 'navy/700', token: 'active (light)' },
+  { hex: '#000D1A', name: 'navy/800' },
+  { hex: '#00070D', name: 'navy/900' },
 ];
 
+/** Neutral ramp — matches `color.primitive.neutral` in packages/tokens/src/tokens.json (plus named dark surfaces). */
 const NEUTRAL_SCALE: { hex: string; name: string; token?: string }[] = [
   { hex: '#FFFFFF', name: 'neutral/0' },
   { hex: '#F8F9FC', name: 'neutral/50', token: 'bg-primary (light)' },
@@ -70,6 +72,7 @@ const NEUTRAL_SCALE: { hex: string; name: string; token?: string }[] = [
   { hex: '#070809', name: 'neutral/950' },
 ];
 
+/** Legacy-friendly alias names — light/dark resolved values match semantic tokens in globals.css. */
 const SEMANTIC_TOKEN_ROWS: { token: string; light: string; dark: string; usage: string }[] = [
   {
     token: '--color-brand',
@@ -86,7 +89,7 @@ const SEMANTIC_TOKEN_ROWS: { token: string; light: string; dark: string; usage: 
   {
     token: '--color-brand-border',
     light: '#002b49',
-    dark: '#3A7DAE',
+    dark: '#3A85C0',
     usage: 'Brand borders/outlines',
   },
   {
@@ -141,6 +144,142 @@ const SEMANTIC_TOKEN_ROWS: { token: string; light: string; dark: string; usage: 
   { token: '--color-success', light: '#0A8853', dark: '#34C77B', usage: 'Success states' },
   { token: '--color-danger', light: '#C8102E', dark: '#FF4D6A', usage: 'Destructive actions' },
   { token: '--color-warning', light: '#F07332', dark: '#FFB547', usage: 'Warning states' },
+];
+
+// DOCUMENTATION ONLY — these colors are shown as reference in the Colors page
+// but are NOT part of the VDS token system. Do not use in components.
+type ExtendedPaletteDocItem = {
+  name: string;
+  hex: string;
+  textColor: string;
+  height: number;
+  token: string;
+  usage: string;
+};
+
+const EXTENDED_PALETTE_REFERENCE: {
+  gridCols: 2 | 3;
+  marginTop: number;
+  items: ExtendedPaletteDocItem[];
+}[] = [
+  {
+    gridCols: 2,
+    marginTop: 20,
+    items: [
+      {
+        name: 'FLAME',
+        hex: '#F55B23',
+        textColor: '#FFFFFF',
+        height: 220,
+        token: '--color-extended-flame',
+        usage: 'Energy, CTAs in marketing, data series 1. Strava/dashboard orange.',
+      },
+      {
+        name: 'ACID',
+        hex: '#D4FF1A',
+        textColor: '#141414',
+        height: 220,
+        token: '--color-extended-acid',
+        usage: 'Highlights, badges, data series 2. Maximum attention. Dark text only.',
+      },
+    ],
+  },
+  {
+    gridCols: 2,
+    marginTop: 10,
+    items: [
+      {
+        name: 'DEEP OCEAN',
+        hex: '#0D1B2A',
+        textColor: '#FFFFFF',
+        height: 220,
+        token: '--color-extended-deep-ocean',
+        usage: 'Dark editorial backgrounds, dashboard bases, night hero sections.',
+      },
+      {
+        name: 'VOLT',
+        hex: '#00C164',
+        textColor: '#0A0A0A',
+        height: 220,
+        token: '--color-extended-volt',
+        usage: 'Growth metrics, success moments in marketing. More vivid than semantic green.',
+      },
+    ],
+  },
+  {
+    gridCols: 2,
+    marginTop: 10,
+    items: [
+      {
+        name: 'ELECTRIC',
+        hex: '#4545E8',
+        textColor: '#FFFFFF',
+        height: 160,
+        token: '--color-extended-electric',
+        usage: 'Analytics graphs, data series 3, AI/tech product moments.',
+      },
+      {
+        name: 'VIOLET',
+        hex: '#7B4FE8',
+        textColor: '#FFFFFF',
+        height: 160,
+        token: '--color-extended-violet',
+        usage: 'Creative accents, data series. Warmer and more purple than Electric.',
+      },
+    ],
+  },
+  {
+    gridCols: 2,
+    marginTop: 10,
+    items: [
+      {
+        name: 'PULSE',
+        hex: '#FF2D78',
+        textColor: '#FFFFFF',
+        height: 160,
+        token: '--color-extended-pulse',
+        usage: 'Marketing CTAs, data series 4. Bolder sibling of DS annotation color #E8186D.',
+      },
+      {
+        name: 'SOLAR',
+        hex: '#F5C800',
+        textColor: '#141414',
+        height: 160,
+        token: '--color-extended-solar',
+        usage: 'Warm highlights, data labels. Golden — warmer than Acid lime.',
+      },
+    ],
+  },
+  {
+    gridCols: 3,
+    marginTop: 10,
+    items: [
+      {
+        name: 'SAGE',
+        hex: '#6B7B52',
+        textColor: '#FFFFFF',
+        height: 120,
+        token: '--color-extended-sage',
+        usage: 'Nature, sustainability, data series 5.',
+      },
+      {
+        name: 'CREAM',
+        hex: '#F5F0E6',
+        textColor: '#3A3530',
+        height: 120,
+        token: '--color-extended-cream',
+        usage: 'Warm editorial surfaces, print-feel layouts.',
+      },
+      {
+        name: 'INK',
+        hex: '#141414',
+        textColor: '#FFFFFF',
+        height: 120,
+        token: '--color-extended-ink',
+        usage: 'Maximum contrast, editorial type, dark overlays.',
+      },
+    ],
+  },
 ];
 
 function vdsSuccessChipStyle(t: Pick<VDSTheme, 'bg' | 'text'>): CSSProperties {
@@ -661,10 +800,10 @@ export default function ColorsFoundationsPage() {
           }}
         >
           {[
-            { dot: '#5B9FD4', label: 'navy/300 — brand-text-dark (dark mode text/icons)' },
-            { dot: '#3A7DAE', label: 'navy/400 — brand-border-dark (dark mode borders)' },
-            { dot: '#1565A8', label: 'navy/600 — brand-dark (dark mode button fill)' },
-            { dot: '#002b49', label: 'navy/800 — brand identity (light mode everything)' },
+            { dot: '#5B9FD4', label: 'blue/300 — brand text (dark mode)' },
+            { dot: '#3A85C0', label: 'blue/400 — brand border (dark mode)' },
+            { dot: '#1565A8', label: 'blue/500 — brand fill (dark mode)' },
+            { dot: '#002b49', label: 'navy/500 — brand identity (light mode)' },
           ].map((item) => (
             <div
               key={item.label}
@@ -1140,10 +1279,10 @@ export default function ColorsFoundationsPage() {
                 <td>Hover</td>
                 <td>+10% white overlay on brand</td>
                 <td>
-                  <span style={{ fontFamily: 'var(--font-mono), monospace', fontSize: 11 }}>#003d69</span>
+                  <span style={{ fontFamily: 'var(--font-mono), monospace', fontSize: 11 }}>#001e35</span>
                 </td>
                 <td>
-                  <span style={{ fontFamily: 'var(--font-mono), monospace', fontSize: 11 }}>#1A72BC</span>
+                  <span style={{ fontFamily: 'var(--font-mono), monospace', fontSize: 11 }}>#3A85C0</span>
                 </td>
               </tr>
               <tr>
@@ -1156,7 +1295,7 @@ export default function ColorsFoundationsPage() {
                 </td>
                 <td>
                   <span style={{ fontFamily: 'var(--font-mono), monospace', fontSize: 11 }}>
-                    ring: #3A7DAE
+                    ring: #3A85C0
                   </span>
                 </td>
               </tr>
@@ -1167,7 +1306,7 @@ export default function ColorsFoundationsPage() {
                   <span style={{ fontFamily: 'var(--font-mono), monospace', fontSize: 11 }}>#001e35</span>
                 </td>
                 <td>
-                  <span style={{ fontFamily: 'var(--font-mono), monospace', fontSize: 11 }}>#0F5A9A</span>
+                  <span style={{ fontFamily: 'var(--font-mono), monospace', fontSize: 11 }}>#0F4F85</span>
                 </td>
               </tr>
               <tr>
@@ -2077,161 +2216,32 @@ export default function ColorsFoundationsPage() {
           their power. One bold color per composition.
         </Callout>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 10,
-            marginTop: 20,
-          }}
-        >
-          <EdSwatch
-            name="FLAME"
-            hex="#F55B23"
-            textColor="#FFFFFF"
-            height={220}
-            token="--color-extended-flame"
-            usage="Energy, CTAs in marketing, data series 1. Strava/dashboard orange."
-            copied={copied}
-            onCopy={copyHex}
-          />
-          <EdSwatch
-            name="ACID"
-            hex="#D4FF1A"
-            textColor="#141414"
-            height={220}
-            token="--color-extended-acid"
-            usage="Highlights, badges, data series 2. Maximum attention. Dark text only."
-            copied={copied}
-            onCopy={copyHex}
-          />
-        </div>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 10,
-            marginTop: 10,
-          }}
-        >
-          <EdSwatch
-            name="DEEP OCEAN"
-            hex="#0D1B2A"
-            textColor="#FFFFFF"
-            height={220}
-            token="--color-extended-deep-ocean"
-            usage="Dark editorial backgrounds, dashboard bases, night hero sections."
-            copied={copied}
-            onCopy={copyHex}
-          />
-          <EdSwatch
-            name="VOLT"
-            hex="#00C164"
-            textColor="#0A0A0A"
-            height={220}
-            token="--color-extended-volt"
-            usage="Growth metrics, success moments in marketing. More vivid than semantic green."
-            copied={copied}
-            onCopy={copyHex}
-          />
-        </div>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 10,
-            marginTop: 10,
-          }}
-        >
-          <EdSwatch
-            name="ELECTRIC"
-            hex="#4545E8"
-            textColor="#FFFFFF"
-            height={160}
-            token="--color-extended-electric"
-            usage="Analytics graphs, data series 3, AI/tech product moments."
-            copied={copied}
-            onCopy={copyHex}
-          />
-          <EdSwatch
-            name="VIOLET"
-            hex="#7B4FE8"
-            textColor="#FFFFFF"
-            height={160}
-            token="--color-extended-violet"
-            usage="Creative accents, data series. Warmer and more purple than Electric."
-            copied={copied}
-            onCopy={copyHex}
-          />
-        </div>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 10,
-            marginTop: 10,
-          }}
-        >
-          <EdSwatch
-            name="PULSE"
-            hex="#FF2D78"
-            textColor="#FFFFFF"
-            height={160}
-            token="--color-extended-pulse"
-            usage="Marketing CTAs, data series 4. Bolder sibling of DS annotation color #E8186D."
-            copied={copied}
-            onCopy={copyHex}
-          />
-          <EdSwatch
-            name="SOLAR"
-            hex="#F5C800"
-            textColor="#141414"
-            height={160}
-            token="--color-extended-solar"
-            usage="Warm highlights, data labels. Golden — warmer than Acid lime."
-            copied={copied}
-            onCopy={copyHex}
-          />
-        </div>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr 1fr',
-            gap: 10,
-            marginTop: 10,
-          }}
-        >
-          <EdSwatch
-            name="SAGE"
-            hex="#6B7B52"
-            textColor="#FFFFFF"
-            height={120}
-            token="--color-extended-sage"
-            usage="Nature, sustainability, data series 5."
-            copied={copied}
-            onCopy={copyHex}
-          />
-          <EdSwatch
-            name="CREAM"
-            hex="#F5F0E6"
-            textColor="#3A3530"
-            height={120}
-            token="--color-extended-cream"
-            usage="Warm editorial surfaces, print-feel layouts."
-            copied={copied}
-            onCopy={copyHex}
-          />
-          <EdSwatch
-            name="INK"
-            hex="#141414"
-            textColor="#FFFFFF"
-            height={120}
-            token="--color-extended-ink"
-            usage="Maximum contrast, editorial type, dark overlays."
-            copied={copied}
-            onCopy={copyHex}
-          />
-        </div>
+        {EXTENDED_PALETTE_REFERENCE.map((row) => (
+          <div
+            key={row.items.map((i) => i.name).join('-')}
+            style={{
+              display: 'grid',
+              gridTemplateColumns:
+                row.gridCols === 3 ? '1fr 1fr 1fr' : '1fr 1fr',
+              gap: 10,
+              marginTop: row.marginTop,
+            }}
+          >
+            {row.items.map((item) => (
+              <EdSwatch
+                key={item.name}
+                name={item.name}
+                hex={item.hex}
+                textColor={item.textColor}
+                height={item.height}
+                token={item.token}
+                usage={item.usage}
+                copied={copied}
+                onCopy={copyHex}
+              />
+            ))}
+          </div>
+        ))}
       </section>
 
       <section id="tokens" style={{ marginBottom: 64 }}>
