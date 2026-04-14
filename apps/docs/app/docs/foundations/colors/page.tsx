@@ -588,6 +588,7 @@ function StatusGroup({
 }
 
 const tocItems = [
+  { id: 'token-architecture', label: 'Token architecture' },
   { id: 'philosophy', label: 'Philosophy' },
   { id: 'brand', label: 'Brand' },
   { id: 'neutral', label: 'Neutral' },
@@ -731,9 +732,412 @@ export default function ColorsFoundationsPage() {
         a job.
       </p>
       <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 12 }}>
-        <span className="page-badge">Stable</span>
-        <span className="page-badge">v1.0</span>
+        <span
+          style={{
+            background: 'rgba(10,136,83,0.10)',
+            color: '#0A8853',
+            fontSize: 12,
+            fontWeight: 600,
+            padding: '4px 12px',
+            borderRadius: 6,
+            border: 'none',
+            display: 'inline-flex',
+            alignItems: 'center',
+          }}
+        >
+          Stable
+        </span>
+        <span
+          style={{
+            background: 'rgba(10,136,83,0.10)',
+            color: '#0A8853',
+            fontSize: 12,
+            fontWeight: 600,
+            padding: '4px 12px',
+            borderRadius: 6,
+            border: 'none',
+            display: 'inline-flex',
+            alignItems: 'center',
+          }}
+        >
+          v1.0
+        </span>
       </div>
+
+      <section id="token-architecture" style={{ marginTop: 40, marginBottom: 64 }}>
+        <h2 className="section-title" style={sectionHeadingStyle}>
+          Token architecture
+        </h2>
+        <p style={sectionLead}>
+          Every VDS color token follows a five-level naming convention. Each segment narrows the
+          token&apos;s meaning — from what it styles, to how it behaves, to when it activates. This makes
+          every token self-documenting and machine-readable.
+        </p>
+
+        {/* Block 1 — Token anatomy */}
+        <div
+          style={{
+            background: t.bg.surface.secondary.default,
+            borderRadius: 14,
+            border: `1px solid ${t.border.default.default}`,
+            padding: '40px 32px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 32,
+            marginBottom: 32,
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+            }}
+          >
+            {(
+              [
+                { label: 'color', style: { background: 'rgba(0,43,73,0.06)', color: t.text.brand.default } },
+                { label: 'bg', style: { background: 'rgba(0,43,73,0.10)', color: t.text.brand.default } },
+                { label: 'fill', style: { background: 'rgba(0,43,73,0.10)', color: t.text.brand.default } },
+                { label: 'primary', style: { background: 'rgba(0,43,73,0.10)', color: t.text.brand.default } },
+                { label: 'hover', style: { background: 'rgba(10,136,83,0.10)', color: '#0A8853' } },
+              ] as const
+            ).map((seg, i, arr) => (
+              <span key={seg.label} style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    padding: '8px 16px',
+                    borderRadius: 8,
+                    fontSize: 14,
+                    fontFamily: 'var(--font-mono), monospace',
+                    fontWeight: 700,
+                    letterSpacing: '-0.01em',
+                    ...seg.style,
+                  }}
+                >
+                  {seg.label}
+                </span>
+                {i < arr.length - 1 ? (
+                  <span
+                    style={{
+                      fontSize: 20,
+                      color: t.text.tertiary.default,
+                      fontWeight: 300,
+                      margin: '0 2px',
+                    }}
+                  >
+                    .
+                  </span>
+                ) : null}
+              </span>
+            ))}
+          </div>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(5, 1fr)',
+              gap: 8,
+              width: '100%',
+              maxWidth: 700,
+            }}
+          >
+            {(
+              [
+                { level: 'Namespace', desc: 'Always color. Reserved prefix.' },
+                { level: 'Element', desc: 'What it styles. bg · text · border · icon' },
+                { level: 'Subtype', desc: "How it's used. surface · fill" },
+                { level: 'Priority', desc: 'Importance level. primary · secondary · tertiary' },
+                { level: 'State', desc: 'When active. default · hover · active · disabled · focus' },
+              ] as const
+            ).map((row) => (
+              <div
+                key={row.level}
+                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}
+              >
+                <span
+                  style={{
+                    fontSize: 10,
+                    fontWeight: 800,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.08em',
+                    color: t.text.tertiary.default,
+                  }}
+                >
+                  {row.level}
+                </span>
+                <span
+                  style={{
+                    fontSize: 12,
+                    color: t.text.secondary.default,
+                    textAlign: 'center',
+                    lineHeight: 1.4,
+                  }}
+                >
+                  {row.desc}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Block 2 — Live examples */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 32 }}>
+          {(
+            [
+              {
+                light: '#FFFFFF',
+                dark: '#0F1117',
+                token: 'color.bg.surface.primary.default',
+                desc: 'Base page and card background. The foundation layer.',
+              },
+              {
+                light: '#001e35',
+                dark: '#3A85C0',
+                token: 'color.bg.fill.primary.hover',
+                desc: 'Button background on cursor hover. Communicates interactivity.',
+              },
+              {
+                light: '#9BA5BE',
+                dark: 'rgba(255,255,255,0.25)',
+                token: 'color.text.secondary.disabled',
+                desc: 'Muted text in disabled state. Never the only indicator.',
+              },
+              {
+                light: '#002b49',
+                dark: '#3A85C0',
+                token: 'color.border.brand.focus',
+                desc: 'Focus ring on brand elements. 3px, 3px offset.',
+              },
+            ] as const
+          ).map((row) => (
+            <div
+              key={row.token}
+              style={{
+                background: t.bg.surface.primary.default,
+                border: `1px solid ${t.border.default.default}`,
+                borderRadius: 10,
+                padding: '14px 20px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 16,
+              }}
+            >
+              <div
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: 8,
+                  border: `1px solid ${t.border.default.default}`,
+                  flexShrink: 0,
+                  background: isDark ? row.dark : row.light,
+                }}
+                aria-hidden
+              />
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono), monospace',
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: t.text.brand.default,
+                  flex: 1,
+                }}
+              >
+                {row.token}
+              </span>
+              <span style={{ fontSize: 13, color: t.text.secondary.default, flex: 2 }}>{row.desc}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Block 3 — Elements */}
+        <h3
+          style={{
+            fontSize: 18,
+            fontWeight: 700,
+            color: t.text.primary.default,
+            marginBottom: 8,
+          }}
+        >
+          Elements
+        </h3>
+        <p style={{ ...sectionLead, marginBottom: 16 }}>
+          Four elements cover every surface a color can touch in a UI.
+        </p>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: 12,
+            marginBottom: 32,
+          }}
+        >
+          {(
+            [
+              {
+                el: 'bg',
+                lines: [
+                  'surface.primary',
+                  'surface.secondary',
+                  'surface.tertiary',
+                  'surface.inverse',
+                  'fill.primary',
+                  'fill.secondary',
+                  'fill.brandSubtle',
+                  'fill.success',
+                  'fill.danger',
+                  'fill.warning',
+                ],
+              },
+              {
+                el: 'text',
+                lines: [
+                  'primary',
+                  'secondary',
+                  'tertiary',
+                  'inverse',
+                  'brand',
+                  'success',
+                  'danger',
+                  'warning',
+                ],
+              },
+              {
+                el: 'border',
+                lines: ['default', 'strong', 'brand', 'success', 'danger', 'warning'],
+              },
+              {
+                el: 'icon',
+                lines: [
+                  'primary',
+                  'secondary',
+                  'tertiary',
+                  'inverse',
+                  'brand',
+                  'success',
+                  'danger',
+                  'warning',
+                ],
+              },
+            ] as const
+          ).map((card) => (
+            <div
+              key={card.el}
+              style={{
+                background: t.bg.surface.secondary.default,
+                border: `1px solid ${t.border.default.default}`,
+                borderRadius: 12,
+                padding: 16,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 8,
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono), monospace',
+                  fontSize: 13,
+                  fontWeight: 700,
+                  color: t.text.brand.default,
+                  background: t.bg.fill.brandSubtle.default,
+                  padding: '4px 10px',
+                  borderRadius: 6,
+                  width: 'fit-content',
+                }}
+              >
+                {card.el}
+              </span>
+              <div style={{ fontSize: 12, color: t.text.secondary.default, fontFamily: 'var(--font-mono), monospace', lineHeight: 1.8 }}>
+                {card.lines.map((line) => (
+                  <div key={line}>{line}</div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Block 4 — States */}
+        <h3
+          style={{
+            fontSize: 18,
+            fontWeight: 700,
+            color: t.text.primary.default,
+            marginBottom: 8,
+          }}
+        >
+          States
+        </h3>
+        <p style={{ ...sectionLead, marginBottom: 16 }}>
+          Every interactive token exists in at least two states: default and one interaction state.
+          Non-interactive tokens only have default.
+        </p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24 }}>
+          {(
+            [
+              {
+                name: 'default',
+                bg: t.bg.surface.tertiary.default,
+                color: t.text.secondary.default,
+                desc: 'Resting. Always defined.',
+              },
+              {
+                name: 'hover',
+                bg: 'rgba(0,43,73,0.08)',
+                color: t.text.brand.default,
+                desc: 'Cursor over element.',
+              },
+              {
+                name: 'active',
+                bg: 'rgba(0,43,73,0.14)',
+                color: t.text.brand.default,
+                desc: 'Press/click down.',
+              },
+              {
+                name: 'disabled',
+                bg: t.bg.surface.secondary.default,
+                color: t.text.tertiary.default,
+                desc: 'Not interactive.',
+              },
+              {
+                name: 'focus',
+                bg: 'rgba(0,43,73,0.08)',
+                color: t.text.brand.default,
+                desc: 'Keyboard focus.',
+              },
+            ] as const
+          ).map((st) => (
+            <div
+              key={st.name}
+              style={{
+                padding: '8px 14px',
+                borderRadius: 8,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 3,
+                background: st.bg,
+                boxShadow:
+                  st.name === 'focus' ? `0 0 0 2px ${t.border.brand.focus}` : 'none',
+              }}
+            >
+              <span style={{ fontSize: 12, fontWeight: 700, fontFamily: 'var(--font-mono), monospace', color: st.color }}>
+                {st.name}
+              </span>
+              <span style={{ fontSize: 11, opacity: 0.8, color: st.color }}>{st.desc}</span>
+            </div>
+          ))}
+        </div>
+
+        <Callout variant="tip" title="Designed for AI">
+          The five-level hierarchy is a machine-readable contract. Every token maps deterministically to a
+          Figma variable, a CSS custom property (--color-bg-fill-primary-hover), and a TypeScript path in
+          buildTheme(). When the MCP agent reads a component, it knows exactly what each color means — no
+          ambiguity, no guessing.
+        </Callout>
+      </section>
 
       <section id="philosophy" style={{ marginTop: 40, marginBottom: 64 }}>
         <div className="cards-grid-3">
