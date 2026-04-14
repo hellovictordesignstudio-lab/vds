@@ -13,11 +13,13 @@ import {
   Layers,
   MousePointer2,
   Palette,
+  ShieldCheck,
   SunMedium,
   Zap,
 } from 'lucide-react';
 import { Callout } from '@/components/docs/Callout';
 import { TableOfContents } from '@/components/docs/TableOfContents';
+import { buildTheme, type VDSTheme } from '@/lib/theme';
 
 function relativeLuminance(hex: string): number {
   const h = hex.replace('#', '');
@@ -141,53 +143,19 @@ const SEMANTIC_TOKEN_ROWS: { token: string; light: string; dark: string; usage: 
   { token: '--color-warning', light: '#F07332', dark: '#FFB547', usage: 'Warning states' },
 ];
 
-type UsageThemeTokens = {
-  bgPrimary: string;
-  bgSecondary: string;
-  bgTertiary: string;
-  bgElevated: string;
-  bgCard: string;
-  textPrimary: string;
-  textSecondary: string;
-  textTertiary: string;
-  textInverse: string;
-  border: string;
-  borderStrong: string;
-  brand: string;
-  brandHover: string;
-  brandText: string;
-  brandBorder: string;
-  brandSubtle: string;
-  success: string;
-  successSubtle: string;
-  danger: string;
-  dangerSubtle: string;
-  shadowCard: string;
-};
-
-function usageTheme(isDark: boolean): UsageThemeTokens {
+function vdsSuccessChipStyle(t: Pick<VDSTheme, 'bg' | 'text'>): CSSProperties {
   return {
-    bgPrimary: isDark ? '#0F1117' : '#FFFFFF',
-    bgSecondary: isDark ? '#161B27' : '#F8F9FC',
-    bgTertiary: isDark ? '#1E2435' : '#F0F2F5',
-    bgElevated: isDark ? '#242B3D' : '#FFFFFF',
-    bgCard: isDark ? '#1A2030' : '#FFFFFF',
-    textPrimary: isDark ? 'rgba(255,255,255,0.92)' : '#0A0F1E',
-    textSecondary: isDark ? 'rgba(255,255,255,0.55)' : '#4A5270',
-    textTertiary: isDark ? 'rgba(255,255,255,0.30)' : '#9BA5BE',
-    textInverse: '#FFFFFF',
-    border: isDark ? 'rgba(255,255,255,0.07)' : '#E5E8EF',
-    borderStrong: isDark ? 'rgba(255,255,255,0.14)' : '#C5CBDA',
-    brand: isDark ? '#1565A8' : '#002b49',
-    brandHover: isDark ? '#1A72BC' : '#003d69',
-    brandText: isDark ? '#5B9FD4' : '#002b49',
-    brandBorder: isDark ? '#3A7DAE' : '#002b49',
-    brandSubtle: isDark ? 'rgba(91,159,212,0.10)' : 'rgba(0,43,73,0.06)',
-    success: '#0A8853',
-    successSubtle: isDark ? 'rgba(52,199,123,0.12)' : '#E6F5EE',
-    danger: '#C8102E',
-    dangerSubtle: isDark ? 'rgba(200,16,46,0.12)' : 'rgba(200,16,46,0.06)',
-    shadowCard: isDark ? '0 1px 4px rgba(0,0,0,0.6)' : '0 1px 4px rgba(0,0,0,0.06)',
+    background: t.bg.fill.success.default,
+    color: t.text.success.default,
+    fontSize: 12,
+    fontFamily: 'inherit',
+    fontWeight: 600,
+    padding: '4px 12px',
+    borderRadius: 6,
+    border: 'none',
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 4,
   };
 }
 
@@ -512,11 +480,11 @@ export default function ColorsFoundationsPage() {
     setTimeout(() => setCopied(null), 1500);
   }
 
-  const t = usageTheme(isDark);
+  const t = buildTheme(isDark);
 
   const dottedBg: CSSProperties = {
-    backgroundColor: t.bgPrimary,
-    backgroundImage: `radial-gradient(circle, ${t.border} 1px, transparent 1px)`,
+    backgroundColor: t.bg.surface.primary.default,
+    backgroundImage: `radial-gradient(circle, ${t.border.default.default} 1px, transparent 1px)`,
     backgroundSize: '20px 20px',
   };
 
@@ -537,6 +505,82 @@ export default function ColorsFoundationsPage() {
     width: '100%',
     alignItems: 'stretch',
   };
+
+  const LAYER_DIMS = {
+    outerPadding: '28px 24px',
+    layer1Padding: '20px',
+    layer1Radius: 12,
+    layer2Margin: '16px',
+    layer2Padding: '16px',
+    layer2Radius: 10,
+    layer3Margin: '12px',
+    layer3Padding: '14px',
+    layer3Radius: 8,
+    cardPadding: '12px 14px',
+    cardRadius: 6,
+    labelFontSize: '10px',
+    labelFontWeight: 700,
+    labelFontFamily: 'monospace',
+    minHeight: '400px',
+  } as const;
+
+  const layeringLabelStyle = (labelColor: string): CSSProperties => ({
+    fontSize: LAYER_DIMS.labelFontSize,
+    fontWeight: LAYER_DIMS.labelFontWeight,
+    fontFamily: `var(--font-mono), ${LAYER_DIMS.labelFontFamily}`,
+    color: labelColor,
+  });
+
+  const layeringDiagrams = [
+    {
+      caption: 'Light mode',
+      colors: {
+        outerBg: '#FFFFFF',
+        outerBgImage: 'radial-gradient(circle, rgba(0,0,0,0.07) 1px, transparent 1px)',
+        outerBorder: '1px solid #E5E8EF',
+        layer1Bg: '#FFFFFF',
+        layer1Border: '1px solid #E5E8EF',
+        layer2Bg: '#F8F9FC',
+        layer2Border: '1px solid #E5E8EF',
+        layer3Bg: '#F0F2F5',
+        layer3Border: '1px solid #E5E8EF',
+        cardBg: '#FFFFFF',
+        cardBorder: '1px solid #E5E8EF',
+        labelColor: '#9BA5BE',
+        cardTitle: '#0A0F1E',
+        cardSubtitle: '#9BA5BE',
+      },
+      hexLabels: {
+        primary: 'bg-primary · #FFFFFF',
+        secondary: 'bg-secondary · #F8F9FC',
+        tertiary: 'bg-tertiary · #F0F2F5',
+      },
+    },
+    {
+      caption: 'Dark mode',
+      colors: {
+        outerBg: '#0F1117',
+        outerBgImage: 'radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px)',
+        outerBorder: '1px solid rgba(255,255,255,0.08)',
+        layer1Bg: '#0F1117',
+        layer1Border: '1px solid rgba(255,255,255,0.12)',
+        layer2Bg: '#161B27',
+        layer2Border: '1px solid rgba(255,255,255,0.10)',
+        layer3Bg: '#1E2435',
+        layer3Border: '1px solid rgba(255,255,255,0.10)',
+        cardBg: '#242B3D',
+        cardBorder: '1px solid rgba(255,255,255,0.12)',
+        labelColor: 'rgba(255,255,255,0.35)',
+        cardTitle: 'rgba(255,255,255,0.88)',
+        cardSubtitle: 'rgba(255,255,255,0.40)',
+      },
+      hexLabels: {
+        primary: 'bg-primary · #0F1117',
+        secondary: 'bg-secondary · #161B27',
+        tertiary: 'bg-tertiary · #1E2435',
+      },
+    },
+  ] as const;
 
   return (
     <>
@@ -753,221 +797,106 @@ export default function ColorsFoundationsPage() {
           style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
-            gap: 16,
+            gap: '16px',
+            alignItems: 'start',
           }}
         >
-          <div
-            style={{
-              opacity: isDark ? 0.4 : 1,
-              transform: isDark ? 'scale(0.97)' : 'scale(1)',
-              transition: 'opacity 0.2s ease, transform 0.2s ease',
-            }}
-          >
-            <div
-              style={{
-                ...dottedBg,
-                borderRadius: 14,
-                border: '1px solid var(--color-border)',
-                padding: '28px 24px',
-              }}
-            >
-              <div style={{ position: 'relative' }}>
-                <div
-                  style={{
-                    background: '#FFFFFF',
-                    border: '1px solid #E5E8EF',
-                    borderRadius: 12,
-                    padding: 20,
-                    position: 'relative',
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: 10,
-                      fontWeight: 700,
-                      color: '#9BA5BE',
-                      fontFamily: 'var(--font-mono), monospace',
-                    }}
-                  >
-                    bg-primary · #FFFFFF
-                  </span>
+          {layeringDiagrams.map(({ caption, colors, hexLabels }) => (
+            <div key={caption}>
+              <div
+                style={{
+                  backgroundColor: colors.outerBg,
+                  backgroundImage: colors.outerBgImage,
+                  backgroundSize: '20px 20px',
+                  border: colors.outerBorder,
+                  borderRadius: '14px',
+                  width: '100%',
+                  minHeight: LAYER_DIMS.minHeight,
+                  boxSizing: 'border-box',
+                  overflow: 'hidden',
+                  opacity: 1,
+                  padding: LAYER_DIMS.outerPadding,
+                }}
+              >
+                <div style={{ position: 'relative' }}>
                   <div
                     style={{
-                      marginTop: 16,
-                      background: '#F8F9FC',
-                      border: '1px solid #E5E8EF',
-                      borderRadius: 10,
-                      padding: 16,
+                      background: colors.layer1Bg,
+                      border: colors.layer1Border,
+                      borderRadius: LAYER_DIMS.layer1Radius,
+                      padding: LAYER_DIMS.layer1Padding,
                       position: 'relative',
                     }}
                   >
-                    <span
-                      style={{
-                        fontSize: 10,
-                        fontWeight: 700,
-                        color: '#9BA5BE',
-                        fontFamily: 'var(--font-mono), monospace',
-                      }}
-                    >
-                      bg-secondary · #F8F9FC
-                    </span>
+                    <span style={layeringLabelStyle(colors.labelColor)}>{hexLabels.primary}</span>
                     <div
                       style={{
-                        marginTop: 12,
-                        background: '#F0F2F5',
-                        border: '1px solid #E5E8EF',
-                        borderRadius: 8,
-                        padding: 14,
+                        margin: LAYER_DIMS.layer2Margin,
+                        background: colors.layer2Bg,
+                        border: colors.layer2Border,
+                        borderRadius: LAYER_DIMS.layer2Radius,
+                        padding: LAYER_DIMS.layer2Padding,
                         position: 'relative',
                       }}
                     >
-                      <span
-                        style={{
-                          fontSize: 10,
-                          fontWeight: 700,
-                          color: '#9BA5BE',
-                          fontFamily: 'var(--font-mono), monospace',
-                        }}
-                      >
-                        bg-tertiary · #F0F2F5
-                      </span>
+                      <span style={layeringLabelStyle(colors.labelColor)}>{hexLabels.secondary}</span>
                       <div
                         style={{
-                          marginTop: 12,
-                          background: '#FFFFFF',
-                          borderRadius: 6,
-                          padding: 10,
-                          border: '1px solid #E5E8EF',
+                          margin: LAYER_DIMS.layer3Margin,
+                          background: colors.layer3Bg,
+                          border: colors.layer3Border,
+                          borderRadius: LAYER_DIMS.layer3Radius,
+                          padding: LAYER_DIMS.layer3Padding,
+                          position: 'relative',
                         }}
                       >
-                        <div style={{ fontSize: 11, fontWeight: 600, color: '#002b49' }}>Card surface</div>
-                        <div style={{ fontSize: 10, color: '#9BA5BE', marginTop: 2 }}>
-                          Elevated back to bg-primary
+                        <span style={layeringLabelStyle(colors.labelColor)}>{hexLabels.tertiary}</span>
+                        <div
+                          style={{
+                            marginTop: LAYER_DIMS.layer3Margin,
+                            background: colors.cardBg,
+                            borderRadius: LAYER_DIMS.cardRadius,
+                            padding: LAYER_DIMS.cardPadding,
+                            border: colors.cardBorder,
+                          }}
+                        >
+                          <div
+                            style={{
+                              fontSize: 13,
+                              fontWeight: 700,
+                              color: colors.cardTitle,
+                            }}
+                          >
+                            Card surface
+                          </div>
+                          <div
+                            style={{
+                              fontSize: 11,
+                              color: colors.cardSubtitle,
+                              marginTop: 4,
+                            }}
+                          >
+                            Elevated back to bg-primary
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div
-              style={{
-                fontSize: 11,
-                fontWeight: 600,
-                textAlign: 'center',
-                marginTop: 10,
-                color: isDark ? 'rgba(255,255,255,0.4)' : 'var(--color-text-tertiary)',
-              }}
-            >
-              Light mode
-            </div>
-          </div>
-          <div
-            style={{
-              opacity: isDark ? 1 : 0.4,
-              transform: isDark ? 'scale(1)' : 'scale(0.97)',
-              transition: 'opacity 0.2s ease, transform 0.2s ease',
-            }}
-          >
-            <div
-              style={{
-                ...dottedBg,
-                borderRadius: 14,
-                border: '1px solid var(--color-border)',
-                padding: '28px 24px',
-              }}
-            >
               <div
                 style={{
-                  background: '#0F1117',
-                  border: '1px solid rgba(255,255,255,0.07)',
-                  borderRadius: 12,
-                  padding: 20,
-                  position: 'relative',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  textAlign: 'center',
+                  marginTop: '12px',
+                  color: '#9BA5BE',
                 }}
               >
-                <span
-                  style={{
-                    fontSize: 10,
-                    fontWeight: 700,
-                    color: 'rgba(255,255,255,0.3)',
-                    fontFamily: 'var(--font-mono), monospace',
-                  }}
-                >
-                  bg-primary · #0F1117
-                </span>
-                <div
-                  style={{
-                    marginTop: 16,
-                    background: '#161B27',
-                    border: '1px solid rgba(255,255,255,0.07)',
-                    borderRadius: 10,
-                    padding: 16,
-                    position: 'relative',
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: 10,
-                      fontWeight: 700,
-                      color: 'rgba(255,255,255,0.3)',
-                      fontFamily: 'var(--font-mono), monospace',
-                    }}
-                  >
-                    bg-secondary · #161B27
-                  </span>
-                  <div
-                    style={{
-                      marginTop: 12,
-                      background: '#1E2435',
-                      border: '1px solid rgba(255,255,255,0.07)',
-                      borderRadius: 8,
-                      padding: 14,
-                      position: 'relative',
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: 10,
-                        fontWeight: 700,
-                        color: 'rgba(255,255,255,0.3)',
-                        fontFamily: 'var(--font-mono), monospace',
-                      }}
-                    >
-                      bg-tertiary · #1E2435
-                    </span>
-                    <div
-                      style={{
-                        marginTop: 12,
-                        background: '#242B3D',
-                        borderRadius: 6,
-                        padding: 10,
-                        border: '1px solid rgba(255,255,255,0.07)',
-                      }}
-                    >
-                      <div style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.7)' }}>
-                        Card surface
-                      </div>
-                      <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', marginTop: 2 }}>
-                        Elevated back to bg-primary
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                {caption}
               </div>
             </div>
-            <div
-              style={{
-                fontSize: 11,
-                fontWeight: 600,
-                textAlign: 'center',
-                marginTop: 10,
-                color: isDark ? 'rgba(255,255,255,0.4)' : 'var(--color-text-tertiary)',
-              }}
-            >
-              Dark mode
-            </div>
-          </div>
+          ))}
         </div>
         <Callout variant="info" title="The rule">
           Always use bg-secondary or bg-tertiary for cards and panels — never create a new color. The
@@ -1276,7 +1205,7 @@ export default function ColorsFoundationsPage() {
           style={{
             ...dottedBg,
             borderRadius: 14,
-            border: `1px solid ${t.border}`,
+            border: `1px solid ${t.border.default.default}`,
             padding: '32px 24px',
             marginTop: 24,
           }}
@@ -1294,13 +1223,13 @@ export default function ColorsFoundationsPage() {
                 {
                   key: 'default',
                   label: 'Default',
-                  btn: { background: t.brand, color: '#FFFFFF', outline: 'none' },
+                  btn: { background: t.bg.fill.primary.default, color: '#FFFFFF', outline: 'none' },
                 },
                 {
                   key: 'hover',
                   label: 'Hover',
                   btn: {
-                    background: t.brandHover,
+                    background: t.bg.fill.primary.hover,
                     color: '#FFFFFF',
                     outline: 'none',
                     cursor: 'pointer',
@@ -1311,9 +1240,9 @@ export default function ColorsFoundationsPage() {
                   key: 'focus',
                   label: 'Focus',
                   btn: {
-                    background: t.brand,
+                    background: t.bg.fill.primary.default,
                     color: '#FFFFFF',
-                    outline: `3px solid ${t.brandBorder}`,
+                    outline: `3px solid ${t.border.brand.default}`,
                     outlineOffset: 3,
                   },
                 },
@@ -1340,7 +1269,7 @@ export default function ColorsFoundationsPage() {
                   key: 'loading',
                   label: 'Loading',
                   btn: {
-                    background: t.brand,
+                    background: t.bg.fill.primary.default,
                     color: 'transparent',
                     outline: 'none',
                   },
@@ -1404,7 +1333,7 @@ export default function ColorsFoundationsPage() {
                   style={{
                     fontSize: 11,
                     fontWeight: 600,
-                    color: t.textTertiary,
+                    color: t.text.tertiary.default,
                     marginTop: 8,
                     textAlign: 'center',
                     textTransform: 'uppercase',
@@ -1431,181 +1360,304 @@ export default function ColorsFoundationsPage() {
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: 16,
+            gap: '16px',
           }}
         >
           <div
             style={{
-              ...dottedBg,
-              borderRadius: 14,
-              border: `1px solid ${t.border}`,
-              padding: 24,
+              background: t.bg.surface.primary.default,
+              border: `1px solid ${t.border.default.default}`,
+              borderRadius: '16px',
+              padding: '24px',
+              boxShadow: t.shadow.card,
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <Eye size={20} color={t.brand} strokeWidth={2} aria-hidden />
-              <span style={{ fontSize: 15, fontWeight: 700, color: t.textPrimary }}>4.5:1 minimum</span>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                marginBottom: '20px',
+              }}
+            >
+              <Eye size={18} color={t.text.brand.default} strokeWidth={2} aria-hidden />
+              <span style={{ fontSize: 15, fontWeight: 700, color: t.text.primary.default }}>4.5:1 minimum</span>
             </div>
-            <div style={{ marginTop: 16 }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, flexWrap: 'wrap' }}>
-                <span
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div
+                style={{
+                  background: t.bg.surface.secondary.default,
+                  borderRadius: '10px',
+                  padding: '14px 16px',
+                }}
+              >
+                <div
                   style={{
-                    background: '#E6F5EE',
-                    color: '#0A8853',
-                    fontSize: 10,
-                    fontWeight: 700,
-                    borderRadius: 4,
-                    padding: '2px 7px',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '10px',
                   }}
                 >
-                  PASS
-                </span>
-                <div>
-                  <div style={{ fontSize: 12, color: t.textSecondary, marginBottom: 6 }}>
-                    #4A5270 on #FFFFFF
-                  </div>
-                  <div
-                    style={{
-                      fontSize: 14,
-                      color: '#4A5270',
-                      background: '#FFFFFF',
-                      padding: '6px 10px',
-                      borderRadius: 6,
-                      display: 'inline-block',
-                    }}
-                  >
-                    Sample text
-                  </div>
-                  <div
+                  <span style={vdsSuccessChipStyle(t)}>PASS</span>
+                  <span
                     style={{
                       fontSize: 11,
                       fontFamily: 'var(--font-mono), monospace',
-                      color: '#0A8853',
-                      marginTop: 6,
-                      fontWeight: 600,
+                      color: t.text.tertiary.default,
                     }}
                   >
-                    4.7:1
-                  </div>
+                    #4A5270 on #FFFFFF
+                  </span>
+                </div>
+                <div
+                  style={{
+                    background: '#FFFFFF',
+                    borderRadius: '7px',
+                    padding: '10px 14px',
+                    border: `1px solid ${t.border.default.default}`,
+                  }}
+                >
+                  <span style={{ fontSize: 14, color: '#4A5270', fontWeight: 500 }}>
+                    The quick brown fox jumps
+                  </span>
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginTop: '8px',
+                  }}
+                >
+                  <span style={{ fontSize: 11, color: t.text.tertiary.default }}>Contrast ratio:</span>
+                  <span
+                    style={{
+                      fontSize: 12,
+                      fontWeight: 700,
+                      color: '#0A8853',
+                      fontFamily: 'var(--font-mono), monospace',
+                    }}
+                  >
+                    4.7:1 ✓
+                  </span>
                 </div>
               </div>
               <div
                 style={{
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  gap: 10,
-                  flexWrap: 'wrap',
-                  marginTop: 16,
+                  background: t.bg.surface.secondary.default,
+                  borderRadius: '10px',
+                  padding: '14px 16px',
                 }}
               >
-                <span
+                <div
                   style={{
-                    background: '#FCEAEC',
-                    color: '#C8102E',
-                    fontSize: 10,
-                    fontWeight: 700,
-                    borderRadius: 4,
-                    padding: '2px 7px',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '10px',
                   }}
                 >
-                  FAIL
-                </span>
-                <div>
-                  <div style={{ fontSize: 12, color: t.textSecondary, marginBottom: 6 }}>
-                    #9BA5BE on #FFFFFF
-                  </div>
-                  <div
+                  <span
                     style={{
-                      fontSize: 14,
-                      color: '#9BA5BE',
-                      background: '#FFFFFF',
-                      padding: '6px 10px',
-                      borderRadius: 6,
-                      border: '1px solid #FCEAEC',
-                      display: 'inline-block',
+                      background: '#FCEAEC',
+                      color: '#C8102E',
+                      fontSize: 10,
+                      fontWeight: 800,
+                      borderRadius: '5px',
+                      padding: '3px 8px',
+                      letterSpacing: '0.05em',
                     }}
                   >
-                    Sample text
-                  </div>
-                  <div
+                    FAIL
+                  </span>
+                  <span
                     style={{
                       fontSize: 11,
                       fontFamily: 'var(--font-mono), monospace',
-                      color: '#C8102E',
-                      marginTop: 6,
-                      fontWeight: 600,
+                      color: t.text.tertiary.default,
                     }}
                   >
-                    2.8:1
-                  </div>
+                    #9BA5BE on #FFFFFF
+                  </span>
+                </div>
+                <div
+                  style={{
+                    background: '#FFFFFF',
+                    borderRadius: '7px',
+                    padding: '10px 14px',
+                    border: `1px solid ${t.border.default.default}`,
+                  }}
+                >
+                  <span style={{ fontSize: 14, color: '#9BA5BE', fontWeight: 500 }}>
+                    The quick brown fox jumps
+                  </span>
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginTop: '8px',
+                  }}
+                >
+                  <span style={{ fontSize: 11, color: t.text.tertiary.default }}>Contrast ratio:</span>
+                  <span
+                    style={{
+                      fontSize: 12,
+                      fontWeight: 700,
+                      color: '#C8102E',
+                      fontFamily: 'var(--font-mono), monospace',
+                    }}
+                  >
+                    2.8:1 ✗
+                  </span>
                 </div>
               </div>
             </div>
           </div>
           <div
             style={{
-              ...dottedBg,
-              borderRadius: 14,
-              border: `1px solid ${t.border}`,
-              padding: 24,
+              background: t.bg.surface.primary.default,
+              border: `1px solid ${t.border.default.default}`,
+              borderRadius: '16px',
+              padding: '24px',
+              boxShadow: t.shadow.card,
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <BookOpen size={20} color={t.brand} strokeWidth={2} aria-hidden />
-              <span style={{ fontSize: 15, fontWeight: 700, color: t.textPrimary }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                marginBottom: '20px',
+              }}
+            >
+              <BookOpen size={18} color={t.text.brand.default} strokeWidth={2} aria-hidden />
+              <span style={{ fontSize: 15, fontWeight: 700, color: t.text.primary.default }}>
                 7:1 target for body
               </span>
             </div>
-            <div style={{ fontSize: 12, color: t.textSecondary, marginTop: 12 }}>
-              --color-text-primary on --color-bg-primary
-            </div>
-            <div
-              style={{
-                marginTop: 10,
-                fontSize: 16,
-                color: isDark ? 'rgba(255,255,255,0.92)' : '#0A0F1E',
-                background: isDark ? '#0F1117' : '#FFFFFF',
-                padding: '12px 14px',
-                borderRadius: 8,
-              }}
-            >
-              The quick brown fox
-            </div>
-            <div
-              style={{
-                marginTop: 10,
-                display: 'inline-block',
-                background: '#E6F5EE',
-                color: '#0A8853',
-                fontSize: 11,
-                fontWeight: 700,
-                borderRadius: 4,
-                padding: '3px 8px',
-              }}
-            >
-              ~15:1 ✓ AAA
+            <div style={{ marginTop: 0 }}>
+              <div
+                style={{
+                  fontSize: 11,
+                  color: t.text.tertiary.default,
+                  marginBottom: '12px',
+                  fontFamily: 'var(--font-mono), monospace',
+                }}
+              >
+                --color-text-primary on --color-bg-primary
+              </div>
+              <div
+                style={{
+                  background: t.bg.surface.secondary.default,
+                  borderRadius: '10px',
+                  padding: '16px',
+                  border: `1px solid ${t.border.default.default}`,
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    marginBottom: '8px',
+                  }}
+                >
+                  <span
+                    style={{
+                      width: 6,
+                      height: 6,
+                      background: t.text.brand.default,
+                      borderRadius: '50%',
+                      flexShrink: 0,
+                    }}
+                    aria-hidden
+                  />
+                  <span
+                    style={{
+                      fontSize: 10,
+                      fontWeight: 600,
+                      color: t.text.tertiary.default,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.06em',
+                    }}
+                  >
+                    Body text sample
+                  </span>
+                </div>
+                <div
+                  style={{
+                    fontSize: 15,
+                    color: t.text.primary.default,
+                    lineHeight: 1.6,
+                    fontWeight: 400,
+                  }}
+                >
+                  The quick brown fox jumps over the lazy dog.
+                </div>
+                <div
+                  style={{
+                    fontSize: 12,
+                    color: t.text.secondary.default,
+                    lineHeight: 1.5,
+                    marginTop: '6px',
+                  }}
+                >
+                  Secondary text is readable too.
+                </div>
+              </div>
+              <div style={{ marginTop: '14px', display: 'inline-flex', ...vdsSuccessChipStyle(t) }}>
+                <CheckCircle2 size={14} color={t.text.success.default} strokeWidth={2} aria-hidden />
+                <span style={{ fontSize: 12, fontWeight: 600, color: t.text.success.default }}>~15:1 AAA certified</span>
+              </div>
             </div>
           </div>
           <div
             style={{
-              ...dottedBg,
-              borderRadius: 14,
-              border: `1px solid ${t.border}`,
-              padding: 24,
+              background: t.bg.surface.primary.default,
+              border: `1px solid ${t.border.default.default}`,
+              borderRadius: '16px',
+              padding: '24px',
+              boxShadow: t.shadow.card,
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <AlertCircle size={20} color={t.brand} strokeWidth={2} aria-hidden />
-              <span style={{ fontSize: 15, fontWeight: 700, color: t.textPrimary }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                marginBottom: '20px',
+              }}
+            >
+              <ShieldCheck size={18} color={t.text.brand.default} strokeWidth={2} aria-hidden />
+              <span style={{ fontSize: 15, fontWeight: 700, color: t.text.primary.default }}>
                 Color + shape + text
               </span>
             </div>
-            <div style={{ marginTop: 16 }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: t.textSecondary, marginBottom: 8 }}>
-                Wrong (color only)
+            <div>
+              <div
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  color: '#C8102E',
+                  marginBottom: '8px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.06em',
+                }}
+              >
+                Color only
               </div>
-              <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <div
+                style={{
+                  background: t.bg.surface.secondary.default,
+                  borderRadius: '10px',
+                  padding: '12px 14px',
+                  border: '1px solid #FCEAEC',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
                   <span
                     style={{
                       width: 10,
@@ -1616,9 +1668,7 @@ export default function ColorsFoundationsPage() {
                     }}
                     aria-hidden
                   />
-                  <span style={{ fontSize: 12, color: t.textPrimary }}>Error</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span style={{ fontSize: 13, color: t.text.primary.default }}>Error</span>
                   <span
                     style={{
                       width: 10,
@@ -1629,32 +1679,55 @@ export default function ColorsFoundationsPage() {
                     }}
                     aria-hidden
                   />
-                  <span style={{ fontSize: 12, color: t.textPrimary }}>Success</span>
+                  <span style={{ fontSize: 13, color: t.text.primary.default }}>Success</span>
                 </div>
+                <p style={{ fontSize: 11, color: t.text.tertiary.default, lineHeight: 1.5, marginTop: '8px', marginBottom: 0 }}>
+                  Color-blind users cannot distinguish these.
+                </p>
               </div>
-              <p style={{ fontSize: 11, color: t.textTertiary, marginTop: 8, marginBottom: 0 }}>
-                Color-blind users can&apos;t distinguish these
-              </p>
-              <div style={{ marginTop: 16 }}>
-                <div style={{ fontSize: 12, fontWeight: 700, color: t.textSecondary, marginBottom: 8 }}>
-                  Right (color + icon + text)
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <AlertCircle size={14} color="#C8102E" strokeWidth={2} aria-hidden />
-                    <span style={{ fontSize: 12, color: '#C8102E', fontWeight: 600 }}>
+              <div style={{ borderTop: `1px solid ${t.border.default.default}`, margin: '16px 0' }} />
+              <div
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  color: '#0A8853',
+                  marginBottom: '8px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.06em',
+                }}
+              >
+                Color + icon + text
+              </div>
+              <div
+                style={{
+                  background: t.bg.surface.secondary.default,
+                  borderRadius: '10px',
+                  padding: '12px 14px',
+                  border: '1px solid #80CCAA',
+                }}
+              >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <AlertCircle
+                      size={16}
+                      color="#C8102E"
+                      strokeWidth={2}
+                      fill="none"
+                      aria-hidden
+                    />
+                    <span style={{ fontSize: 13, fontWeight: 600, color: '#C8102E' }}>
                       Error: invalid email
                     </span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <CheckCircle2 size={14} color="#0A8853" strokeWidth={2} aria-hidden />
-                    <span style={{ fontSize: 12, color: '#0A8853', fontWeight: 600 }}>
-                      Success: saved
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <CheckCircle2 size={16} color="#0A8853" strokeWidth={2} aria-hidden />
+                    <span style={{ fontSize: 13, fontWeight: 600, color: '#0A8853' }}>
+                      Success: changes saved
                     </span>
                   </div>
                 </div>
-                <p style={{ fontSize: 11, color: t.textTertiary, marginTop: 8, marginBottom: 0 }}>
-                  Icon + color + text — accessible to everyone
+                <p style={{ fontSize: 11, color: t.text.tertiary.default, marginTop: '8px', marginBottom: 0 }}>
+                  Icon + color + text — works for everyone.
                 </p>
               </div>
             </div>
@@ -1679,7 +1752,7 @@ export default function ColorsFoundationsPage() {
           style={{
             fontSize: 13,
             fontWeight: 700,
-            color: t.textSecondary,
+            color: t.text.secondary.default,
             textTransform: 'uppercase',
             letterSpacing: '0.06em',
             marginBottom: 12,
@@ -1695,14 +1768,14 @@ export default function ColorsFoundationsPage() {
                   background: '#FFFFFF',
                   borderRadius: 12,
                   padding: 20,
-                  boxShadow: t.shadowCard,
+                  boxShadow: t.shadow.card,
                 }}
               >
                 <label
                   style={{
                     fontSize: 12,
                     fontWeight: 600,
-                    color: t.textPrimary,
+                    color: t.text.primary.default,
                     display: 'block',
                     marginBottom: 6,
                   }}
@@ -1711,15 +1784,15 @@ export default function ColorsFoundationsPage() {
                 </label>
                 <div
                   style={{
-                    background: t.bgTertiary,
-                    border: `1px solid ${t.border}`,
+                    background: t.bg.surface.tertiary.default,
+                    border: `1px solid ${t.border.default.default}`,
                     borderRadius: 8,
                     height: 36,
                     padding: '0 12px',
                     display: 'flex',
                     alignItems: 'center',
                     fontSize: 13,
-                    color: t.textSecondary,
+                    color: t.text.secondary.default,
                   }}
                 >
                   you@example.com
@@ -1732,8 +1805,8 @@ export default function ColorsFoundationsPage() {
                     height: 40,
                     borderRadius: 8,
                     border: 'none',
-                    background: t.brand,
-                    color: t.textInverse,
+                    background: t.bg.fill.primary.default,
+                    color: t.text.inverse.default,
                     fontWeight: 700,
                     fontSize: 14,
                     cursor: 'default',
@@ -1756,7 +1829,7 @@ export default function ColorsFoundationsPage() {
                   background: '#FFFFFF',
                   borderRadius: 12,
                   padding: 20,
-                  boxShadow: t.shadowCard,
+                  boxShadow: t.shadow.card,
                 }}
               >
                 <label
@@ -1772,15 +1845,15 @@ export default function ColorsFoundationsPage() {
                 </label>
                 <div
                   style={{
-                    background: t.bgTertiary,
-                    border: `1px solid ${t.border}`,
+                    background: t.bg.surface.tertiary.default,
+                    border: `1px solid ${t.border.default.default}`,
                     borderRadius: 8,
                     height: 36,
                     padding: '0 12px',
                     display: 'flex',
                     alignItems: 'center',
                     fontSize: 13,
-                    color: t.textSecondary,
+                    color: t.text.secondary.default,
                   }}
                 >
                   you@example.com
@@ -1816,7 +1889,7 @@ export default function ColorsFoundationsPage() {
           style={{
             fontSize: 13,
             fontWeight: 700,
-            color: t.textSecondary,
+            color: t.text.secondary.default,
             textTransform: 'uppercase',
             letterSpacing: '0.06em',
             marginBottom: 12,
@@ -1833,7 +1906,7 @@ export default function ColorsFoundationsPage() {
                   background: isDark ? '#0F1117' : '#F8F9FC',
                   borderRadius: 10,
                   padding: 16,
-                  border: `1px solid ${t.border}`,
+                  border: `1px solid ${t.border.default.default}`,
                   fontFamily: 'var(--font-mono), monospace',
                 }}
               >
@@ -1857,7 +1930,7 @@ export default function ColorsFoundationsPage() {
                   background: isDark ? '#0F1117' : '#F8F9FC',
                   borderRadius: 10,
                   padding: 16,
-                  border: `1px solid ${t.border}`,
+                  border: `1px solid ${t.border.default.default}`,
                   fontFamily: 'var(--font-mono), monospace',
                 }}
               >
@@ -1885,7 +1958,7 @@ export default function ColorsFoundationsPage() {
           style={{
             fontSize: 13,
             fontWeight: 700,
-            color: t.textSecondary,
+            color: t.text.secondary.default,
             textTransform: 'uppercase',
             letterSpacing: '0.06em',
             marginBottom: 12,
@@ -1901,8 +1974,8 @@ export default function ColorsFoundationsPage() {
                 style={{
                   borderRadius: 12,
                   overflow: 'hidden',
-                  border: `1px solid ${t.border}`,
-                  background: t.bgCard,
+                  border: `1px solid ${t.border.default.default}`,
+                  background: t.bg.surface.primary.default,
                 }}
               >
                 {(
@@ -1919,11 +1992,11 @@ export default function ColorsFoundationsPage() {
                       alignItems: 'center',
                       gap: 10,
                       padding: '10px 14px',
-                      borderBottom: idx < arr.length - 1 ? `1px solid ${t.border}` : 'none',
+                      borderBottom: idx < arr.length - 1 ? `1px solid ${t.border.default.default}` : 'none',
                     }}
                   >
                     <row.Icon size={16} color={row.color} strokeWidth={2} aria-hidden />
-                    <span style={{ fontSize: 13, fontWeight: 500, color: t.textPrimary }}>{row.text}</span>
+                    <span style={{ fontSize: 13, fontWeight: 500, color: t.text.primary.default }}>{row.text}</span>
                   </div>
                 ))}
               </div>
@@ -1939,8 +2012,8 @@ export default function ColorsFoundationsPage() {
                 style={{
                   borderRadius: 12,
                   overflow: 'hidden',
-                  border: `1px solid ${t.border}`,
-                  background: t.bgCard,
+                  border: `1px solid ${t.border.default.default}`,
+                  background: t.bg.surface.primary.default,
                 }}
               >
                 <div
@@ -1949,22 +2022,11 @@ export default function ColorsFoundationsPage() {
                     alignItems: 'center',
                     gap: 10,
                     padding: '10px 14px',
-                    borderBottom: `1px solid ${t.border}`,
+                    borderBottom: `1px solid ${t.border.default.default}`,
                   }}
                 >
-                  <span
-                    style={{
-                      fontSize: 10,
-                      fontWeight: 700,
-                      background: '#E6F5EE',
-                      color: '#0A8853',
-                      padding: '2px 8px',
-                      borderRadius: 4,
-                    }}
-                  >
-                    New
-                  </span>
-                  <span style={{ fontSize: 13, fontWeight: 500, color: t.textPrimary }}>Dashboard</span>
+                  <span style={vdsSuccessChipStyle(t)}>New</span>
+                  <span style={{ fontSize: 13, fontWeight: 500, color: t.text.primary.default }}>Dashboard</span>
                 </div>
                 <div
                   style={{
@@ -1972,7 +2034,7 @@ export default function ColorsFoundationsPage() {
                     alignItems: 'center',
                     gap: 10,
                     padding: '10px 14px',
-                    borderBottom: `1px solid ${t.border}`,
+                    borderBottom: `1px solid ${t.border.default.default}`,
                   }}
                 >
                   <span style={{ fontSize: 13, fontWeight: 600, color: '#C8102E' }}>Settings</span>
@@ -1990,7 +2052,7 @@ export default function ColorsFoundationsPage() {
                   >
                     Popular
                   </span>
-                  <span style={{ fontSize: 13, fontWeight: 500, color: t.textPrimary }}>Card title</span>
+                  <span style={{ fontSize: 13, fontWeight: 500, color: t.text.primary.default }}>Card title</span>
                 </div>
               </div>
             </div>

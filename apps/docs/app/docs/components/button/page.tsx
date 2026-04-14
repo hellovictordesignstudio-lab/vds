@@ -45,60 +45,23 @@ import { DontCard } from '../../../../components/docs/DontCard';
 import { LivePreview } from '../../../../components/docs/LivePreview';
 import { PropsTable } from '../../../../components/docs/PropsTable';
 import ComponentHero from '../../../../components/docs/ComponentHero';
+import { buildTheme, type VDSTheme } from '@/lib/theme';
 
 const TABS = ['Overview', 'Usage', 'Content', 'Code', 'Changelog'] as const;
 
-type UsageThemeTokens = {
-  bgPrimary: string;
-  bgSecondary: string;
-  bgTertiary: string;
-  bgElevated: string;
-  bgCard: string;
-  textPrimary: string;
-  textSecondary: string;
-  textTertiary: string;
-  textInverse: string;
-  border: string;
-  borderStrong: string;
-  brand: string;
-  brandHover: string;
-  brandText: string;
-  brandBorder: string;
-  brandSubtle: string;
-  brandSubtle2: string;
-  success: string;
-  successSubtle: string;
-  danger: string;
-  dangerSubtle: string;
-  shadow: string;
-  shadowCard: string;
-};
-
-function usageTheme(isDark: boolean): UsageThemeTokens {
+function vdsSuccessChipStyle(t: Pick<VDSTheme, 'bg' | 'text'>): CSSProperties {
   return {
-    bgPrimary: isDark ? '#0F1117' : '#FFFFFF',
-    bgSecondary: isDark ? '#161B27' : '#F8F9FC',
-    bgTertiary: isDark ? '#1E2435' : '#F0F2F5',
-    bgElevated: isDark ? '#242B3D' : '#FFFFFF',
-    bgCard: isDark ? '#1A2030' : '#FFFFFF',
-    textPrimary: isDark ? 'rgba(255,255,255,0.92)' : '#0A0F1E',
-    textSecondary: isDark ? 'rgba(255,255,255,0.55)' : '#4A5270',
-    textTertiary: isDark ? 'rgba(255,255,255,0.30)' : '#9BA5BE',
-    textInverse: '#FFFFFF',
-    border: isDark ? 'rgba(255,255,255,0.07)' : '#E5E8EF',
-    borderStrong: isDark ? 'rgba(255,255,255,0.14)' : '#C5CBDA',
-    brand: isDark ? '#1565A8' : '#002b49',
-    brandHover: isDark ? '#1A72BC' : '#003d69',
-    brandText: isDark ? '#5B9FD4' : '#002b49',
-    brandBorder: isDark ? '#3A7DAE' : '#002b49',
-    brandSubtle: isDark ? 'rgba(91,159,212,0.10)' : 'rgba(0,43,73,0.06)',
-    brandSubtle2: isDark ? 'rgba(91,159,212,0.18)' : 'rgba(0,43,73,0.12)',
-    success: '#0A8853',
-    successSubtle: isDark ? 'rgba(52,199,123,0.12)' : '#E6F5EE',
-    danger: '#C8102E',
-    dangerSubtle: isDark ? 'rgba(200,16,46,0.12)' : 'rgba(200,16,46,0.06)',
-    shadow: isDark ? '0 2px 12px rgba(0,0,0,0.5)' : '0 2px 12px rgba(0,0,0,0.08)',
-    shadowCard: isDark ? '0 1px 4px rgba(0,0,0,0.6)' : '0 1px 4px rgba(0,0,0,0.06)',
+    background: t.bg.fill.success.default,
+    color: t.text.success.default,
+    fontSize: 12,
+    fontFamily: 'inherit',
+    fontWeight: 600,
+    padding: '4px 12px',
+    borderRadius: 6,
+    border: 'none',
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 4,
   };
 }
 
@@ -149,7 +112,7 @@ function SegmentedControl<T extends string>({
 
 const anatomyFont = "'Nunito Sans', system-ui, sans-serif";
 
-function ButtonAnatomyDiagram({ t }: { t: UsageThemeTokens }) {
+function ButtonAnatomyDiagram({ t }: { t: VDSTheme }) {
   const legendLetter = {
     fontWeight: 600 as const,
     color: 'var(--color-text-primary)',
@@ -223,7 +186,7 @@ function ButtonAnatomyDiagram({ t }: { t: UsageThemeTokens }) {
         </text>
 
         {/* Q1 */}
-        <rect x="70" y="100" width="200" height="44" rx="8" fill={t.brand} />
+        <rect x="70" y="100" width="200" height="44" rx="8" fill={t.bg.fill.primary.default} />
         <text x="170" y="127" textAnchor="middle" fill="#FFFFFF" fontSize="15" fontWeight="700">
           Label
         </text>
@@ -262,15 +225,15 @@ function ButtonAnatomyDiagram({ t }: { t: UsageThemeTokens }) {
           height="44"
           rx="8"
           fill="#FFFFFF"
-          stroke={t.brandBorder}
+          stroke={t.border.brand.default}
           strokeWidth="1.5"
         />
-        <circle cx="416" cy="120" r="8" fill={t.brandText} fillOpacity="0.15" />
-        <circle cx="416" cy="120" r="4" fill={t.brandText} />
-        <text x="510" y="126" textAnchor="middle" fill={t.brandText} fontSize="15" fontWeight="700">
+        <circle cx="416" cy="120" r="8" fill={t.text.brand.default} fillOpacity="0.15" />
+        <circle cx="416" cy="120" r="4" fill={t.text.brand.default} />
+        <text x="510" y="126" textAnchor="middle" fill={t.text.brand.default} fontSize="15" fontWeight="700">
           Label
         </text>
-        <text x="606" y="128" textAnchor="middle" fill={t.brandText} fontSize="18" fontWeight="700">
+        <text x="606" y="128" textAnchor="middle" fill={t.text.brand.default} fontSize="18" fontWeight="700">
           ›
         </text>
         <circle cx="510" cy="101" r="4" fill="#E8186D" />
@@ -329,7 +292,7 @@ function ButtonAnatomyDiagram({ t }: { t: UsageThemeTokens }) {
         </text>
 
         {/* Q3 */}
-        <text x="170" y="368" textAnchor="middle" fill={t.brandText} fontSize="17" fontWeight="700">
+        <text x="170" y="368" textAnchor="middle" fill={t.text.brand.default} fontSize="17" fontWeight="700">
           Link button
         </text>
         <circle cx="120" cy="362" r="4" fill="#E8186D" />
@@ -354,8 +317,8 @@ function ButtonAnatomyDiagram({ t }: { t: UsageThemeTokens }) {
         </text>
 
         {/* Q4 */}
-        <rect x="474" y="332" width="72" height="56" rx="8" fill={t.bgTertiary} />
-        <text x="510" y="366" textAnchor="middle" fill={t.brandText} fontSize="28" fontWeight="300">
+        <rect x="474" y="332" width="72" height="56" rx="8" fill={t.bg.surface.tertiary.default} />
+        <text x="510" y="366" textAnchor="middle" fill={t.text.brand.default} fontSize="28" fontWeight="300">
           +
         </text>
         <circle cx="510" cy="335" r="4" fill="#E8186D" />
@@ -448,16 +411,16 @@ function ButtonAnatomyDiagram({ t }: { t: UsageThemeTokens }) {
   );
 }
 
-function MobilePaymentCard({ variant, t }: { variant: 'do' | 'dont'; t: UsageThemeTokens }) {
+function MobilePaymentCard({ variant, t }: { variant: 'do' | 'dont'; t: VDSTheme }) {
   return (
     <div
       style={{
         width: '260px',
-        background: t.bgCard,
+        background: t.bg.surface.primary.default,
         borderRadius: '20px',
         overflow: 'hidden',
-        boxShadow: t.shadowCard,
-        border: `1px solid ${t.border}`,
+        boxShadow: t.shadow.card,
+        border: `1px solid ${t.border.default.default}`,
         fontFamily: 'var(--font-sans)',
       }}
     >
@@ -467,21 +430,21 @@ function MobilePaymentCard({ variant, t }: { variant: 'do' | 'dont'; t: UsageThe
             width: '40px',
             height: '40px',
             borderRadius: '50%',
-            border: `2px solid ${t.borderStrong}`,
+            border: `2px solid ${t.border.strong.default}`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             marginBottom: '12px',
           }}
         >
-          <Zap size={18} color={t.textSecondary} strokeWidth={1.5} />
+          <Zap size={18} color={t.text.secondary.default} strokeWidth={1.5} />
         </div>
 
         <div
           style={{
             fontSize: '28px',
             fontWeight: '900',
-            color: t.textPrimary,
+            color: t.text.primary.default,
             letterSpacing: '-0.03em',
             lineHeight: 1.1,
             marginBottom: '2px',
@@ -489,11 +452,11 @@ function MobilePaymentCard({ variant, t }: { variant: 'do' | 'dont'; t: UsageThe
         >
           $2.95
         </div>
-        <div style={{ fontSize: '12px', color: t.textTertiary, marginBottom: '16px' }}>
+        <div style={{ fontSize: '12px', color: t.text.tertiary.default, marginBottom: '16px' }}>
           2.95 USDC
         </div>
 
-        <div style={{ height: '1px', background: t.border, marginBottom: '12px' }} />
+        <div style={{ height: '1px', background: t.border.default.default, marginBottom: '12px' }} />
 
         {[
           { label: 'Pay with', value: 'USDC Wallet' },
@@ -510,12 +473,12 @@ function MobilePaymentCard({ variant, t }: { variant: 'do' | 'dont'; t: UsageThe
               padding: '5px 0',
             }}
           >
-            <span style={{ fontSize: '12px', color: t.textSecondary }}>{row.label}</span>
+            <span style={{ fontSize: '12px', color: t.text.secondary.default }}>{row.label}</span>
             <span
               style={{
                 fontSize: '12px',
                 fontWeight: '600',
-                color: t.textPrimary,
+                color: t.text.primary.default,
               }}
             >
               {row.value}
@@ -527,7 +490,7 @@ function MobilePaymentCard({ variant, t }: { variant: 'do' | 'dont'; t: UsageThe
       <div
         style={{
           padding: '12px 16px 20px',
-          borderTop: `1px solid ${t.border}`,
+          borderTop: `1px solid ${t.border.default.default}`,
           display: 'flex',
           flexDirection: 'column',
           gap: '8px',
@@ -539,14 +502,14 @@ function MobilePaymentCard({ variant, t }: { variant: 'do' | 'dont'; t: UsageThe
               style={{
                 width: '100%',
                 height: '44px',
-                background: t.bgTertiary,
+                background: t.bg.surface.tertiary.default,
                 borderRadius: '10px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '13px',
                 fontWeight: '700',
-                color: t.textPrimary,
+                color: t.text.primary.default,
                 cursor: 'pointer',
               }}
             >
@@ -556,7 +519,7 @@ function MobilePaymentCard({ variant, t }: { variant: 'do' | 'dont'; t: UsageThe
               style={{
                 width: '100%',
                 height: '44px',
-                background: t.brand,
+                background: t.bg.fill.primary.default,
                 borderRadius: '10px',
                 display: 'flex',
                 alignItems: 'center',
@@ -576,7 +539,7 @@ function MobilePaymentCard({ variant, t }: { variant: 'do' | 'dont'; t: UsageThe
               style={{
                 width: '100%',
                 height: '44px',
-                background: t.brand,
+                background: t.bg.fill.primary.default,
                 borderRadius: '10px',
                 display: 'flex',
                 alignItems: 'center',
@@ -593,7 +556,7 @@ function MobilePaymentCard({ variant, t }: { variant: 'do' | 'dont'; t: UsageThe
               style={{
                 width: '100%',
                 height: '44px',
-                background: t.brand,
+                background: t.bg.fill.primary.default,
                 borderRadius: '10px',
                 display: 'flex',
                 alignItems: 'center',
@@ -613,7 +576,7 @@ function MobilePaymentCard({ variant, t }: { variant: 'do' | 'dont'; t: UsageThe
           style={{
             width: '48px',
             height: '4px',
-            background: t.borderStrong,
+            background: t.border.strong.default,
             borderRadius: '2px',
             margin: '4px auto 0',
           }}
@@ -623,11 +586,11 @@ function MobilePaymentCard({ variant, t }: { variant: 'do' | 'dont'; t: UsageThe
   );
 }
 
-function LoginFormMockup({ variant, t }: { variant: 'do' | 'dont'; t: UsageThemeTokens }) {
+function LoginFormMockup({ variant, t }: { variant: 'do' | 'dont'; t: VDSTheme }) {
   const primaryBtn = {
     width: '100%' as const,
     height: 44,
-    background: t.brand,
+    background: t.bg.fill.primary.default,
     borderRadius: 10,
     display: 'flex' as const,
     alignItems: 'center' as const,
@@ -640,14 +603,14 @@ function LoginFormMockup({ variant, t }: { variant: 'do' | 'dont'; t: UsageTheme
   const secondaryBtn = {
     width: '100%' as const,
     height: 44,
-    background: t.bgTertiary,
+    background: t.bg.surface.tertiary.default,
     borderRadius: 10,
     display: 'flex' as const,
     alignItems: 'center' as const,
     justifyContent: 'center' as const,
     fontSize: 13,
     fontWeight: 700,
-    color: t.textPrimary,
+    color: t.text.primary.default,
     fontFamily: 'var(--font-sans)',
     border: 'none',
   };
@@ -657,11 +620,11 @@ function LoginFormMockup({ variant, t }: { variant: 'do' | 'dont'; t: UsageTheme
       style={{
         width: '100%',
         maxWidth: 280,
-        background: t.bgCard,
+        background: t.bg.surface.primary.default,
         borderRadius: 16,
         padding: 24,
-        boxShadow: t.shadowCard,
-        border: `1px solid ${t.border}`,
+        boxShadow: t.shadow.card,
+        border: `1px solid ${t.border.default.default}`,
         fontFamily: 'var(--font-sans)',
       }}
     >
@@ -671,7 +634,7 @@ function LoginFormMockup({ variant, t }: { variant: 'do' | 'dont'; t: UsageTheme
             display: 'block',
             fontSize: 12,
             fontWeight: 600,
-            color: t.textSecondary,
+            color: t.text.secondary.default,
             marginBottom: 6,
           }}
         >
@@ -681,13 +644,13 @@ function LoginFormMockup({ variant, t }: { variant: 'do' | 'dont'; t: UsageTheme
           style={{
             height: 40,
             borderRadius: 8,
-            border: `1px solid ${t.border}`,
+            border: `1px solid ${t.border.default.default}`,
             padding: '0 12px',
             display: 'flex',
             alignItems: 'center',
             fontSize: 14,
-            color: t.textPrimary,
-            background: t.bgTertiary,
+            color: t.text.primary.default,
+            background: t.bg.surface.tertiary.default,
           }}
         >
           john@example.com
@@ -699,7 +662,7 @@ function LoginFormMockup({ variant, t }: { variant: 'do' | 'dont'; t: UsageTheme
             display: 'block',
             fontSize: 12,
             fontWeight: 600,
-            color: t.textSecondary,
+            color: t.text.secondary.default,
             marginBottom: 6,
           }}
         >
@@ -709,14 +672,14 @@ function LoginFormMockup({ variant, t }: { variant: 'do' | 'dont'; t: UsageTheme
           style={{
             height: 40,
             borderRadius: 8,
-            border: `1px solid ${t.border}`,
+            border: `1px solid ${t.border.default.default}`,
             padding: '0 12px',
             display: 'flex',
             alignItems: 'center',
             fontSize: 14,
-            color: t.textPrimary,
+            color: t.text.primary.default,
             letterSpacing: '0.08em',
-            background: t.bgTertiary,
+            background: t.bg.surface.tertiary.default,
           }}
         >
           ••••••••••
@@ -740,11 +703,11 @@ function LoginFormMockup({ variant, t }: { variant: 'do' | 'dont'; t: UsageTheme
 
 const DANGER_RED = '#C8102E';
 
-function dangerRowLabelStyle(t: UsageThemeTokens): CSSProperties {
+function dangerRowLabelStyle(t: VDSTheme): CSSProperties {
   return {
     fontSize: 11,
     fontWeight: 600,
-    color: t.textTertiary,
+    color: t.text.tertiary.default,
     textTransform: 'uppercase',
     letterSpacing: '0.06em',
     marginBottom: 10,
@@ -785,7 +748,7 @@ function GhostDangerInteractiveButton({
   );
 }
 
-function DangerVariantShowcase({ t }: { t: UsageThemeTokens }) {
+function DangerVariantShowcase({ t }: { t: VDSTheme }) {
   const filled = (h: number, pad: number, fs: number): CSSProperties => ({
     display: 'inline-flex',
     alignItems: 'center',
@@ -813,8 +776,8 @@ function DangerVariantShowcase({ t }: { t: UsageThemeTokens }) {
   return (
     <div
       style={{
-        backgroundColor: t.bgPrimary,
-        backgroundImage: `radial-gradient(circle, ${t.border} 1px, transparent 1px)`,
+        backgroundColor: t.bg.surface.primary.default,
+        backgroundImage: `radial-gradient(circle, ${t.border.default.default} 1px, transparent 1px)`,
         backgroundSize: '20px 20px',
         padding: '32px 24px',
         borderRadius: 'var(--radius-lg)',
@@ -927,17 +890,17 @@ function DangerVariantShowcase({ t }: { t: UsageThemeTokens }) {
   );
 }
 
-function DangerConfirmDialogMockup({ t }: { t: UsageThemeTokens }) {
+function DangerConfirmDialogMockup({ t }: { t: VDSTheme }) {
   return (
     <div
       style={{
         width: '100%',
         maxWidth: 320,
-        background: t.bgCard,
+        background: t.bg.surface.primary.default,
         borderRadius: 16,
         padding: 24,
-        boxShadow: t.shadowCard,
-        border: `1px solid ${t.border}`,
+        boxShadow: t.shadow.card,
+        border: `1px solid ${t.border.default.default}`,
         fontFamily: 'var(--font-sans)',
       }}
     >
@@ -954,11 +917,11 @@ function DangerConfirmDialogMockup({ t }: { t: UsageThemeTokens }) {
       >
         <Trash2 size={16} color={DANGER_RED} strokeWidth={2} aria-hidden />
       </div>
-      <div style={{ fontWeight: 700, fontSize: 16, color: t.textPrimary, marginTop: 12 }}>Delete project?</div>
+      <div style={{ fontWeight: 700, fontSize: 16, color: t.text.primary.default, marginTop: 12 }}>Delete project?</div>
       <p
         style={{
           fontSize: 13,
-          color: t.textSecondary,
+          color: t.text.secondary.default,
           marginTop: 6,
           marginBottom: 0,
           lineHeight: 1.5,
@@ -967,7 +930,7 @@ function DangerConfirmDialogMockup({ t }: { t: UsageThemeTokens }) {
         This will permanently delete &apos;Brand Assets&apos; and all its contents. This action cannot be
         undone.
       </p>
-      <div style={{ height: 1, background: t.border, margin: '16px 0' }} />
+      <div style={{ height: 1, background: t.border.default.default, margin: '16px 0' }} />
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%' }}>
         <button
           type="button"
@@ -991,8 +954,8 @@ function DangerConfirmDialogMockup({ t }: { t: UsageThemeTokens }) {
           style={{
             width: '100%',
             height: 44,
-            background: t.bgTertiary,
-            color: t.textPrimary,
+            background: t.bg.surface.tertiary.default,
+            color: t.text.primary.default,
             borderRadius: 10,
             border: 'none',
             fontSize: 13,
@@ -1008,7 +971,7 @@ function DangerConfirmDialogMockup({ t }: { t: UsageThemeTokens }) {
   );
 }
 
-function DangerInlineListMockup({ t }: { t: UsageThemeTokens }) {
+function DangerInlineListMockup({ t }: { t: VDSTheme }) {
   const rows = ['brand-assets.zip', 'logo-v2.png', 'style-guide.pdf'];
   const [hovered, setHovered] = useState<number | null>(null);
   return (
@@ -1016,12 +979,12 @@ function DangerInlineListMockup({ t }: { t: UsageThemeTokens }) {
       style={{
         width: '100%',
         maxWidth: 320,
-        background: t.bgCard,
+        background: t.bg.surface.primary.default,
         borderRadius: 16,
         padding: 0,
         overflow: 'hidden',
-        boxShadow: t.shadowCard,
-        border: `1px solid ${t.border}`,
+        boxShadow: t.shadow.card,
+        border: `1px solid ${t.border.default.default}`,
         fontFamily: 'var(--font-sans)',
       }}
     >
@@ -1032,14 +995,14 @@ function DangerInlineListMockup({ t }: { t: UsageThemeTokens }) {
           onMouseLeave={() => setHovered(null)}
           style={{
             padding: '14px 20px',
-            borderBottom: `1px solid ${t.border}`,
+            borderBottom: `1px solid ${t.border.default.default}`,
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            background: hovered === i ? t.bgTertiary : undefined,
+            background: hovered === i ? t.bg.surface.tertiary.default : undefined,
           }}
         >
-          <span style={{ fontSize: 14, color: t.textPrimary }}>{name}</span>
+          <span style={{ fontSize: 14, color: t.text.primary.default }}>{name}</span>
           <button
             type="button"
             style={{
@@ -1065,7 +1028,7 @@ function DangerInlineListMockup({ t }: { t: UsageThemeTokens }) {
 const TOUCH_TARGET_OK = '#0a8853';
 const TOUCH_TARGET_BAD = '#e8186d';
 
-function TouchTargetsMockup({ variant, t }: { variant: 'do' | 'dont'; t: UsageThemeTokens }) {
+function TouchTargetsMockup({ variant, t }: { variant: 'do' | 'dont'; t: VDSTheme }) {
   const isDo = variant === 'do';
   const overlayBorder = isDo
     ? `1.5px dashed ${TOUCH_TARGET_OK}`
@@ -1155,7 +1118,7 @@ function TouchTargetsMockup({ variant, t }: { variant: 'do' | 'dont'; t: UsageTh
               zIndex: 1,
               width: 36,
               height: 36,
-              background: t.brand,
+              background: t.bg.fill.primary.default,
               borderRadius: 8,
               border: 'none',
               display: 'flex',
@@ -1207,7 +1170,7 @@ function TouchTargetsMockup({ variant, t }: { variant: 'do' | 'dont'; t: UsageTh
               zIndex: 1,
               width: 36,
               height: 36,
-              background: t.bgTertiary,
+              background: t.bg.surface.tertiary.default,
               borderRadius: '50%',
               border: 'none',
               display: 'flex',
@@ -1217,7 +1180,7 @@ function TouchTargetsMockup({ variant, t }: { variant: 'do' | 'dont'; t: UsageTh
               padding: 0,
             }}
           >
-            <Bookmark size={16} color={t.brandText} strokeWidth={2} aria-hidden />
+            <Bookmark size={16} color={t.text.brand.default} strokeWidth={2} aria-hidden />
           </button>
         </div>
 
@@ -1268,8 +1231,8 @@ function TouchTargetsMockup({ variant, t }: { variant: 'do' | 'dont'; t: UsageTh
             style={{
               position: 'relative',
               zIndex: 1,
-              background: t.bgTertiary,
-              color: t.brandText,
+              background: t.bg.surface.tertiary.default,
+              color: t.text.brand.default,
               height: 36,
               padding: '0 14px',
               borderRadius: 8,
@@ -1283,7 +1246,7 @@ function TouchTargetsMockup({ variant, t }: { variant: 'do' | 'dont'; t: UsageTh
               fontFamily: 'var(--font-sans)',
             }}
           >
-            <Plus size={15} color={t.brandText} strokeWidth={2} aria-hidden />
+            <Plus size={15} color={t.text.brand.default} strokeWidth={2} aria-hidden />
             Add item
           </button>
         </div>
@@ -1303,22 +1266,22 @@ function TouchTargetsMockup({ variant, t }: { variant: 'do' | 'dont'; t: UsageTh
   );
 }
 
-function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: boolean }) {
+function ButtonUsageStatesSection({ t, isDark }: { t: VDSTheme; isDark: boolean }) {
   const variantLabelStyle: CSSProperties = {
     fontSize: 12,
     fontWeight: 700,
     textTransform: 'uppercase',
     letterSpacing: '0.08em',
-    color: t.textTertiary,
+    color: t.text.tertiary.default,
     marginBottom: 10,
   };
 
   const dottedStripStyle: CSSProperties = {
-    backgroundColor: t.bgPrimary,
-    backgroundImage: `radial-gradient(circle, ${t.border} 1px, transparent 1px)`,
+    backgroundColor: t.bg.surface.primary.default,
+    backgroundImage: `radial-gradient(circle, ${t.border.default.default} 1px, transparent 1px)`,
     backgroundSize: '20px 20px',
     borderRadius: 14,
-    border: `1px solid ${t.border}`,
+    border: `1px solid ${t.border.default.default}`,
     padding: '28px 24px',
   };
 
@@ -1349,9 +1312,9 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
     alignItems: 'center',
     gap: 16,
     width: '100%',
-    background: t.bgCard,
+    background: t.bg.surface.primary.default,
     borderRadius: 12,
-    border: `1px solid ${t.border}`,
+    border: `1px solid ${t.border.default.default}`,
     padding: '20px 16px',
   };
 
@@ -1386,7 +1349,7 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
           style={{
             fontSize: 12,
             fontWeight: 700,
-            color: t.textPrimary,
+            color: t.text.primary.default,
           }}
         >
           {stateName}
@@ -1456,7 +1419,7 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
   const tertiaryOutline: CSSProperties = {
     ...btnBase,
     background: 'transparent',
-    border: `1.5px solid ${t.brandBorder}`,
+    border: `1.5px solid ${t.border.brand.default}`,
   };
 
   return (
@@ -1467,7 +1430,7 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
       <p
         style={{
           fontSize: '14px',
-          color: t.textSecondary,
+          color: t.text.secondary.default,
           lineHeight: 1.6,
           marginBottom: 20,
         }}
@@ -1481,7 +1444,7 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
           stateName="Enabled"
           tokens={['bg: brand', 'color: white']}
           demo={
-            <button type="button" style={{ ...btnBase, background: t.brand, color: '#FFFFFF' }}>
+            <button type="button" style={{ ...btnBase, background: t.bg.fill.primary.default, color: '#FFFFFF' }}>
               Enabled
             </button>
           }
@@ -1491,7 +1454,7 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
           tokens={['bg: brand-hover', 'color: white']}
           demo={
             <div style={{ position: 'relative', display: 'inline-block' }}>
-              <button type="button" style={{ ...btnBase, background: t.brandHover, color: '#FFFFFF' }}>
+              <button type="button" style={{ ...btnBase, background: t.bg.fill.primary.hover, color: '#FFFFFF' }}>
                 Hover
               </button>
               <MousePointer2
@@ -1518,9 +1481,9 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
               type="button"
               style={{
                 ...btnBase,
-                background: t.brand,
+                background: t.bg.fill.primary.default,
                 color: '#FFFFFF',
-                outline: `3px solid ${t.brandBorder}`,
+                outline: `3px solid ${t.border.brand.default}`,
                 outlineOffset: 3,
               }}
             >
@@ -1556,8 +1519,8 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
               disabled
               style={{
                 ...btnBase,
-                background: t.bgTertiary,
-                color: t.textTertiary,
+                background: t.bg.surface.tertiary.default,
+                color: t.text.tertiary.default,
                 cursor: 'not-allowed',
               }}
             >
@@ -1574,7 +1537,7 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
               aria-label="Loading"
               style={{
                 ...btnBase,
-                background: t.brand,
+                background: t.bg.fill.primary.default,
                 color: 'transparent',
                 position: 'relative',
               }}
@@ -1602,7 +1565,7 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
           stateName="Enabled"
           tokens={['bg: surface-2', 'color: brand']}
           demo={
-            <button type="button" style={{ ...btnBase, background: t.bgTertiary, color: t.brandText }}>
+            <button type="button" style={{ ...btnBase, background: t.bg.surface.tertiary.default, color: t.text.brand.default }}>
               Enabled
             </button>
           }
@@ -1617,14 +1580,14 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
                 style={{
                   ...btnBase,
                   background: isDark ? 'rgba(255,255,255,0.08)' : '#E5E8EE',
-                  color: t.brandText,
+                  color: t.text.brand.default,
                 }}
               >
                 Hover
               </button>
               <MousePointer2
                 size={12}
-                color={t.brandText}
+                color={t.text.brand.default}
                 strokeWidth={2}
                 style={{
                   position: 'absolute',
@@ -1646,9 +1609,9 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
               type="button"
               style={{
                 ...btnBase,
-                background: t.bgTertiary,
-                color: t.brandText,
-                outline: `3px solid ${t.brandBorder}`,
+                background: t.bg.surface.tertiary.default,
+                color: t.text.brand.default,
+                outline: `3px solid ${t.border.brand.default}`,
                 outlineOffset: 3,
               }}
             >
@@ -1665,7 +1628,7 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
               style={{
                 ...btnBase,
                 background: isDark ? 'rgba(255,255,255,0.12)' : '#D8DCE5',
-                color: t.brandText,
+                color: t.text.brand.default,
               }}
             >
               Pressed
@@ -1681,8 +1644,8 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
               disabled
               style={{
                 ...btnBase,
-                background: t.bgTertiary,
-                color: t.textTertiary,
+                background: t.bg.surface.tertiary.default,
+                color: t.text.tertiary.default,
                 cursor: 'not-allowed',
               }}
             >
@@ -1699,7 +1662,7 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
               aria-label="Loading"
               style={{
                 ...btnBase,
-                background: t.bgTertiary,
+                background: t.bg.surface.tertiary.default,
                 color: 'transparent',
                 position: 'relative',
               }}
@@ -1716,7 +1679,7 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
               >
                 <LoadingSpinnerInner
                   borderMuted={isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,43,73,0.2)'}
-                  borderTop={t.brandBorder}
+                  borderTop={t.border.brand.default}
                 />
               </span>
               Loading
@@ -1730,7 +1693,7 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
           stateName="Enabled"
           tokens={['bg: transparent', 'border: brand']}
           demo={
-            <button type="button" style={{ ...tertiaryOutline, color: t.brandText }}>
+            <button type="button" style={{ ...tertiaryOutline, color: t.text.brand.default }}>
               Enabled
             </button>
           }
@@ -1744,15 +1707,15 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
                 type="button"
                 style={{
                   ...tertiaryOutline,
-                  background: t.brandSubtle,
-                  color: t.brandText,
+                  background: t.bg.fill.brandSubtle.default,
+                  color: t.text.brand.default,
                 }}
               >
                 Hover
               </button>
               <MousePointer2
                 size={12}
-                color={t.brandText}
+                color={t.text.brand.default}
                 strokeWidth={2}
                 style={{
                   position: 'absolute',
@@ -1774,8 +1737,8 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
               type="button"
               style={{
                 ...tertiaryOutline,
-                color: t.brandText,
-                outline: `3px solid ${t.brandBorder}`,
+                color: t.text.brand.default,
+                outline: `3px solid ${t.border.brand.default}`,
                 outlineOffset: 3,
               }}
             >
@@ -1791,8 +1754,8 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
               type="button"
               style={{
                 ...tertiaryOutline,
-                background: t.brandSubtle2,
-                color: t.brandText,
+                background: t.bg.fill.brandSubtle2.default,
+                color: t.text.brand.default,
               }}
             >
               Pressed
@@ -1808,8 +1771,8 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
               disabled
               style={{
                 ...tertiaryOutline,
-                border: `1.5px solid ${t.border}`,
-                color: t.textTertiary,
+                border: `1.5px solid ${t.border.default.default}`,
+                color: t.text.tertiary.default,
                 cursor: 'not-allowed',
               }}
             >
@@ -1828,7 +1791,7 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
                 ...tertiaryOutline,
                 color: 'transparent',
                 position: 'relative',
-                border: `1.5px solid ${t.brandBorder}`,
+                border: `1.5px solid ${t.border.brand.default}`,
               }}
             >
               <span
@@ -1843,7 +1806,7 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
               >
                 <LoadingSpinnerInner
                   borderMuted={isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,43,73,0.2)'}
-                  borderTop={t.brandText}
+                  borderTop={t.text.brand.default}
                 />
               </span>
               Loading
@@ -1941,25 +1904,23 @@ function ButtonUsageStatesSection({ t, isDark }: { t: UsageThemeTokens; isDark: 
         />
       </VariantStrip>
 
-      <div style={{ marginTop: 24 }}>
-        <Callout icon={<Info size={20} />} title="Focus is not optional">
-          Every interactive button must show a visible focus ring for keyboard and assistive technology
-          users. VDS uses a 3px accent-colored outline with 3px offset — meeting WCAG 2.1 AA focus visibility
-          requirements across all variants.
-        </Callout>
-      </div>
+      <Callout icon={<Info size={20} />} title="Focus is not optional">
+        Every interactive button must show a visible focus ring for keyboard and assistive technology
+        users. VDS uses a 3px accent-colored outline with 3px offset — meeting WCAG 2.1 AA focus visibility
+        requirements across all variants.
+      </Callout>
     </div>
   );
 }
 
-function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: boolean }) {
+function ButtonUsageWidthSection({ t, isDark }: { t: VDSTheme; isDark: boolean }) {
   const W_ANNOT = '#E8186D';
   const dottedPad: CSSProperties = {
-    backgroundColor: t.bgPrimary,
-    backgroundImage: `radial-gradient(circle, ${t.border} 1px, transparent 1px)`,
+    backgroundColor: t.bg.surface.primary.default,
+    backgroundImage: `radial-gradient(circle, ${t.border.default.default} 1px, transparent 1px)`,
     backgroundSize: '20px 20px',
     borderRadius: 14,
-    border: `1px solid ${t.border}`,
+    border: `1px solid ${t.border.default.default}`,
     padding: '48px 40px',
     marginBottom: 32,
   };
@@ -1982,11 +1943,11 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
         style={{
           width: '100%',
           maxWidth: 320,
-          background: t.bgCard,
+          background: t.bg.surface.primary.default,
           borderRadius: 16,
           padding: '24px',
-          boxShadow: t.shadowCard,
-          border: `1px solid ${t.border}`,
+          boxShadow: t.shadow.card,
+          border: `1px solid ${t.border.default.default}`,
           fontFamily: 'var(--font-sans)',
         }}
       >
@@ -1995,7 +1956,7 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
             style={{
               width: 40,
               height: 40,
-              background: t.bgTertiary,
+              background: t.bg.surface.tertiary.default,
               borderRadius: 8,
               display: 'flex',
               alignItems: 'center',
@@ -2003,41 +1964,30 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
               flexShrink: 0,
             }}
           >
-            <Package size={20} color={t.textTertiary} strokeWidth={2} aria-hidden />
+            <Package size={20} color={t.text.tertiary.default} strokeWidth={2} aria-hidden />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', minWidth: 0 }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: t.textPrimary }}>Pro Plan</div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: t.text.primary.default }}>Pro Plan</div>
             <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
-              <span style={{ fontSize: 11, color: t.textTertiary }}>Billed yearly</span>
-              <span
-                style={{
-                  background: '#E6F5EE',
-                  color: '#0A8853',
-                  fontSize: 10,
-                  fontWeight: 700,
-                  borderRadius: 4,
-                  padding: '2px 7px',
-                }}
-              >
-                Save 40%
-              </span>
+              <span style={{ fontSize: 11, color: t.text.tertiary.default }}>Billed yearly</span>
+              <span style={vdsSuccessChipStyle(t)}>Save 40%</span>
             </div>
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'flex-end', marginTop: 14, gap: 2 }}>
-          <span style={{ fontSize: 32, fontWeight: 800, color: t.textPrimary, lineHeight: 1 }}>$12</span>
+          <span style={{ fontSize: 32, fontWeight: 800, color: t.text.primary.default, lineHeight: 1 }}>$12</span>
           <span
             style={{
               fontSize: 13,
               fontWeight: 500,
-              color: t.textTertiary,
+              color: t.text.tertiary.default,
               marginBottom: 4,
             }}
           >
             .99/mo
           </span>
         </div>
-        <div style={{ height: 1, background: t.border, margin: '16px 0' }} />
+        <div style={{ height: 1, background: t.border.default.default, margin: '16px 0' }} />
         {features.map((f) => (
           <div
             key={f}
@@ -2050,16 +2000,16 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
               style={{ flexShrink: 0 }}
               aria-hidden
             />
-            <span style={{ fontSize: 12, color: t.textSecondary }}>{f}</span>
+            <span style={{ fontSize: 12, color: t.text.secondary.default }}>{f}</span>
           </div>
         ))}
-        <div style={{ height: 1, background: t.border, margin: '16px 0' }} />
+        <div style={{ height: 1, background: t.border.default.default, margin: '16px 0' }} />
         {fullWidthPrimary ? (
           <button
             type="button"
             style={{
               width: '100%',
-              background: t.brand,
+              background: t.bg.fill.primary.default,
               color: '#ffffff',
               height: 44,
               borderRadius: 10,
@@ -2094,7 +2044,7 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
                 gap: '8px',
                 padding: '0 20px',
                 margin: '0 auto',
-                background: t.brand,
+                background: t.bg.fill.primary.default,
                 color: '#ffffff',
                 height: 44,
                 borderRadius: 10,
@@ -2125,17 +2075,17 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
             marginTop: 12,
           }}
         >
-          <span style={{ fontSize: 11, color: t.textTertiary }}>No credit card required</span>
+          <span style={{ fontSize: 11, color: t.text.tertiary.default }}>No credit card required</span>
           <button
             type="button"
             style={{
-              background: t.bgTertiary,
-              color: t.textPrimary,
+              background: t.bg.surface.tertiary.default,
+              color: t.text.primary.default,
               fontSize: 12,
               fontWeight: 600,
               padding: '6px 14px',
               borderRadius: 6,
-              border: `1px solid ${t.border}`,
+              border: `1px solid ${t.border.default.default}`,
               cursor: 'default',
               fontFamily: 'var(--font-sans)',
             }}
@@ -2155,7 +2105,7 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
     avatarAlt: string;
   };
   function WidthContactsMockup({ fullWidthButtons }: { fullWidthButtons: boolean }) {
-    const followPillBg = isDark ? t.brandSubtle : '#E8F0FF';
+    const followPillBg = isDark ? t.bg.fill.brandSubtle.default : '#E8F0FF';
     const rows: ContactRow[] = [
       {
         name: 'Sarah Chen',
@@ -2187,31 +2137,31 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
         style={{
           width: '100%',
           maxWidth: 360,
-          background: t.bgCard,
+          background: t.bg.surface.primary.default,
           borderRadius: 16,
           overflow: 'hidden',
           fontFamily: 'var(--font-sans)',
-          boxShadow: t.shadowCard,
-          border: `1px solid ${t.border}`,
+          boxShadow: t.shadow.card,
+          border: `1px solid ${t.border.default.default}`,
         }}
       >
         <div
           style={{
             padding: '16px 20px',
-            borderBottom: `1px solid ${t.border}`,
+            borderBottom: `1px solid ${t.border.default.default}`,
             display: 'flex',
             alignItems: 'center',
           }}
         >
-          <span style={{ fontSize: 15, fontWeight: 700, color: t.textPrimary }}>Find friends</span>
-          <span style={{ fontSize: 12, color: t.textTertiary, marginLeft: 'auto' }}>27 friends</span>
+          <span style={{ fontSize: 15, fontWeight: 700, color: t.text.primary.default }}>Find friends</span>
+          <span style={{ fontSize: 12, color: t.text.tertiary.default, marginLeft: 'auto' }}>27 friends</span>
         </div>
         {rows.map((row, i) => (
           <div
             key={row.name}
             style={{
               padding: '12px 20px',
-              borderBottom: i < rows.length - 1 ? `1px solid ${t.border}` : 'none',
+              borderBottom: i < rows.length - 1 ? `1px solid ${t.border.default.default}` : 'none',
               display: 'flex',
               alignItems: 'center',
               gap: 12,
@@ -2241,7 +2191,7 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
                 style={{
                   fontSize: 13,
                   fontWeight: 600,
-                  color: t.textPrimary,
+                  color: t.text.primary.default,
                   overflow: fullWidthButtons ? 'hidden' : undefined,
                   textOverflow: fullWidthButtons ? 'ellipsis' : undefined,
                   whiteSpace: fullWidthButtons ? 'nowrap' : undefined,
@@ -2249,7 +2199,7 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
               >
                 {row.name}
               </div>
-              <div style={{ fontSize: 11, color: t.textTertiary }}>{row.sub}</div>
+              <div style={{ fontSize: 11, color: t.text.tertiary.default }}>{row.sub}</div>
             </div>
             {fullWidthButtons ? (
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -2258,7 +2208,7 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
                   style={{
                     width: '100%',
                     display: 'block',
-                    background: t.brand,
+                    background: t.bg.fill.primary.default,
                     color: '#ffffff',
                     height: 36,
                     borderRadius: 8,
@@ -2277,8 +2227,8 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
                 type="button"
                 style={{
                   marginLeft: 'auto',
-                  background: row.label === 'Requested' ? t.bgTertiary : followPillBg,
-                  color: row.label === 'Requested' ? t.textTertiary : t.brandText,
+                  background: row.label === 'Requested' ? t.bg.surface.tertiary.default : followPillBg,
+                  color: row.label === 'Requested' ? t.text.tertiary.default : t.text.brand.default,
                   fontSize: 12,
                   fontWeight: 700,
                   padding: '6px 14px',
@@ -2307,7 +2257,7 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
       <p
         style={{
           fontSize: '14px',
-          color: t.textSecondary,
+          color: t.text.secondary.default,
           lineHeight: 1.6,
           marginBottom: 28,
         }}
@@ -2326,7 +2276,7 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
       <p
         style={{
           fontSize: '14px',
-          color: t.textSecondary,
+          color: t.text.secondary.default,
           lineHeight: 1.6,
           marginBottom: 20,
         }}
@@ -2403,8 +2353,8 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
                 type="button"
                 style={{
                   width: '100%',
-                  background: t.bgTertiary,
-                  color: t.textPrimary,
+                  background: t.bg.surface.tertiary.default,
+                  color: t.text.primary.default,
                   height: '44px',
                   borderRadius: '8px',
                   fontSize: '14px',
@@ -2419,11 +2369,11 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
                   boxSizing: 'border-box',
                 }}
               >
-                <Download size={16} color={t.textPrimary} strokeWidth={2} aria-hidden />
+                <Download size={16} color={t.text.primary.default} strokeWidth={2} aria-hidden />
                 Export report
                 <ArrowRight
                   size={16}
-                  color={t.textPrimary}
+                  color={t.text.primary.default}
                   strokeWidth={2}
                   style={{ marginLeft: 'auto', opacity: 0.6 }}
                   aria-hidden
@@ -2485,7 +2435,7 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
       <p
         style={{
           fontSize: '14px',
-          color: t.textSecondary,
+          color: t.text.secondary.default,
           lineHeight: 1.6,
           marginBottom: 20,
         }}
@@ -2498,21 +2448,21 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
         <div style={grid3}>
           <div>
             <div style={{ textAlign: 'right' }}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: t.textSecondary }}>Hug contents</div>
-              <div style={{ fontSize: 11, color: t.textTertiary, marginTop: 4 }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: t.text.secondary.default }}>Hug contents</div>
+              <div style={{ fontSize: 11, color: t.text.tertiary.default, marginTop: 4 }}>
                 In Figma: set width to Hug in Auto Layout
               </div>
             </div>
             <div
               style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginTop: 12 }}
             >
-              <div style={{ width: 40, height: 1, background: t.border }} />
+              <div style={{ width: 40, height: 1, background: t.border.default.default }} />
               <div
                 style={{
                   width: 5,
                   height: 5,
                   borderRadius: '50%',
-                  background: t.border,
+                  background: t.border.default.default,
                   flexShrink: 0,
                 }}
               />
@@ -2523,7 +2473,7 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
             <div
               style={{
                 width: '100%',
-                border: `1.5px dashed ${t.borderStrong}`,
+                border: `1.5px dashed ${t.border.strong.default}`,
                 borderRadius: 12,
                 padding: 20,
                 display: 'flex',
@@ -2535,7 +2485,7 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
               <div
                 style={{
                   fontSize: 11,
-                  color: t.textTertiary,
+                  color: t.text.tertiary.default,
                   fontWeight: 600,
                   textAlign: 'center',
                   marginBottom: 6,
@@ -2551,7 +2501,7 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
                   marginBottom: 16,
                 }}
               >
-                <div style={{ flex: 1, height: 1, background: t.borderStrong }} />
+                <div style={{ flex: 1, height: 1, background: t.border.strong.default }} />
               </div>
               <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
                 <button
@@ -2560,8 +2510,8 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: 8,
-                    background: t.bgTertiary,
-                    color: t.textPrimary,
+                    background: t.bg.surface.tertiary.default,
+                    color: t.text.primary.default,
                     height: 40,
                     padding: '0 18px',
                     borderRadius: 8,
@@ -2572,9 +2522,9 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
                     fontFamily: 'var(--font-sans)',
                   }}
                 >
-                  <Star size={16} color={t.brandText} strokeWidth={2} aria-hidden />
+                  <Star size={16} color={t.text.brand.default} strokeWidth={2} aria-hidden />
                   Save draft
-                  <ChevronDown size={15} color={t.textTertiary} strokeWidth={2} aria-hidden />
+                  <ChevronDown size={15} color={t.text.tertiary.default} strokeWidth={2} aria-hidden />
                 </button>
               </div>
               <div
@@ -2599,17 +2549,17 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
                   width: 5,
                   height: 5,
                   borderRadius: '50%',
-                  background: t.border,
+                  background: t.border.default.default,
                   flexShrink: 0,
                 }}
               />
-              <div style={{ width: 40, height: 1, background: t.border }} />
+              <div style={{ width: 40, height: 1, background: t.border.default.default }} />
             </div>
             <div style={{ textAlign: 'left' }}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: t.textSecondary }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: t.text.secondary.default }}>
                 Icons stay 8px from label
               </div>
-              <div style={{ fontSize: 11, color: t.textTertiary, marginTop: 4 }}>
+              <div style={{ fontSize: 11, color: t.text.tertiary.default, marginTop: 4 }}>
                 Gap never changes regardless of label length
               </div>
             </div>
@@ -2621,7 +2571,7 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
         style={{
           fontSize: 13,
           fontWeight: 700,
-          color: t.textSecondary,
+          color: t.text.secondary.default,
           textTransform: 'uppercase',
           letterSpacing: '0.06em',
           marginBottom: 12,
@@ -2658,7 +2608,7 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
         style={{
           fontSize: 13,
           fontWeight: 700,
-          color: t.textSecondary,
+          color: t.text.secondary.default,
           textTransform: 'uppercase',
           letterSpacing: '0.06em',
           marginBottom: 12,
@@ -2693,13 +2643,11 @@ function ButtonUsageWidthSection({ t, isDark }: { t: UsageThemeTokens; isDark: b
         </div>
       </div>
 
-      <div style={{ marginTop: 24 }}>
-        <Callout icon={<Ruler size={20} />} title="The simple rule">
-          Fixed width when the button IS the hero of its container. Intrinsic width when the button lives
-          alongside other content. When in doubt — if it&apos;s the only button in a card or modal footer,
-          make it fixed.
-        </Callout>
-      </div>
+      <Callout icon={<Ruler size={20} />} title="The simple rule">
+        Fixed width when the button IS the hero of its container. Intrinsic width when the button lives
+        alongside other content. When in doubt — if it&apos;s the only button in a card or modal footer,
+        make it fixed.
+      </Callout>
     </div>
   );
 }
@@ -2725,7 +2673,7 @@ export default function ButtonDocsPage() {
     return () => observer.disconnect();
   }, []);
 
-  const t = usageTheme(isDark);
+  const t = buildTheme(isDark);
 
   const leftIcon =
     icons === 'left' || icons === 'both' ? <Plus size={16} aria-hidden /> : undefined;
@@ -3204,7 +3152,7 @@ export default function ButtonDocsPage() {
             <div
               style={{
                 marginBottom: '32px',
-                border: `1px solid ${t.border}`,
+                border: `1px solid ${t.border.default.default}`,
                 borderRadius: 'var(--radius-lg)',
                 overflow: 'hidden',
               }}
@@ -3212,8 +3160,8 @@ export default function ButtonDocsPage() {
               <div
                 style={{
                   display: 'flex',
-                  background: t.bgSecondary,
-                  borderBottom: `1px solid ${t.border}`,
+                  background: t.bg.surface.secondary.default,
+                  borderBottom: `1px solid ${t.border.default.default}`,
                   padding: '10px 0',
                 }}
               >
@@ -3227,7 +3175,7 @@ export default function ButtonDocsPage() {
                       fontWeight: '800',
                       letterSpacing: '0.07em',
                       textTransform: 'uppercase',
-                      color: t.textTertiary,
+                      color: t.text.tertiary.default,
                     }}
                   >
                     {label}
@@ -3239,8 +3187,8 @@ export default function ButtonDocsPage() {
                 style={{
                   height: '6px',
                   background: isDark
-                    ? `linear-gradient(to right, ${t.brand} 0%, ${t.brand} 20%, rgba(21,101,168,0.5) 40%, rgba(21,101,168,0.2) 60%, rgba(21,101,168,0.08) 80%, transparent 100%)`
-                    : `linear-gradient(to right, ${t.brand} 0%, ${t.brand} 20%, rgba(0,43,73,0.5) 40%, rgba(0,43,73,0.2) 60%, rgba(0,43,73,0.08) 80%, transparent 100%)`,
+                    ? `linear-gradient(to right, ${t.bg.fill.primary.default} 0%, ${t.bg.fill.primary.default} 20%, rgba(21,101,168,0.5) 40%, rgba(21,101,168,0.2) 60%, rgba(21,101,168,0.08) 80%, transparent 100%)`
+                    : `linear-gradient(to right, ${t.bg.fill.primary.default} 0%, ${t.bg.fill.primary.default} 20%, rgba(0,43,73,0.5) 40%, rgba(0,43,73,0.2) 60%, rgba(0,43,73,0.08) 80%, transparent 100%)`,
                 }}
               />
 
@@ -3248,11 +3196,11 @@ export default function ButtonDocsPage() {
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  background: t.bgSecondary,
-                  backgroundImage: `radial-gradient(circle, ${t.border} 1px, transparent 1px)`,
+                  background: t.bg.surface.secondary.default,
+                  backgroundImage: `radial-gradient(circle, ${t.border.default.default} 1px, transparent 1px)`,
                   backgroundSize: '20px 20px',
                   padding: '28px 0',
-                  borderTop: `1px solid ${t.border}`,
+                  borderTop: `1px solid ${t.border.default.default}`,
                 }}
               >
                 <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
@@ -3281,7 +3229,7 @@ export default function ButtonDocsPage() {
                       alignItems: 'center',
                       gap: '6px',
                       padding: '10px 18px',
-                      background: t.brand,
+                      background: t.bg.fill.primary.default,
                       color: '#fff',
                       borderRadius: '8px',
                       fontSize: '13px',
@@ -3300,8 +3248,8 @@ export default function ButtonDocsPage() {
                       alignItems: 'center',
                       gap: '6px',
                       padding: '9px 16px',
-                      background: t.bgTertiary,
-                      color: t.textPrimary,
+                      background: t.bg.surface.tertiary.default,
+                      color: t.text.primary.default,
                       border: 'none',
                       borderRadius: '8px',
                       fontSize: '13px',
@@ -3321,8 +3269,8 @@ export default function ButtonDocsPage() {
                       gap: '6px',
                       padding: '9px 16px',
                       background: 'transparent',
-                      color: t.brandText,
-                      border: `1.5px solid ${t.brandBorder}`,
+                      color: t.text.brand.default,
+                      border: `1.5px solid ${t.border.brand.default}`,
                       borderRadius: '8px',
                       fontSize: '13px',
                       fontWeight: '700',
@@ -3341,7 +3289,7 @@ export default function ButtonDocsPage() {
                       gap: '6px',
                       padding: '9px 16px',
                       background: 'transparent',
-                      color: t.brandText,
+                      color: t.text.brand.default,
                       borderRadius: '8px',
                       fontSize: '13px',
                       fontWeight: '600',
@@ -3363,45 +3311,45 @@ export default function ButtonDocsPage() {
                 <tr>
                   <th
                     style={{
-                      background: t.bgSecondary,
-                      borderBottom: `2px solid ${t.borderStrong}`,
-                      color: t.textTertiary,
+                      background: t.bg.surface.secondary.default,
+                      borderBottom: `2px solid ${t.border.strong.default}`,
+                      color: t.text.tertiary.default,
                     }}
                   >
                     Variant
                   </th>
                   <th
                     style={{
-                      background: t.bgSecondary,
-                      borderBottom: `2px solid ${t.borderStrong}`,
-                      color: t.textTertiary,
+                      background: t.bg.surface.secondary.default,
+                      borderBottom: `2px solid ${t.border.strong.default}`,
+                      color: t.text.tertiary.default,
                     }}
                   >
                     Emphasis
                   </th>
                   <th
                     style={{
-                      background: t.bgSecondary,
-                      borderBottom: `2px solid ${t.borderStrong}`,
-                      color: t.textTertiary,
+                      background: t.bg.surface.secondary.default,
+                      borderBottom: `2px solid ${t.border.strong.default}`,
+                      color: t.text.tertiary.default,
                     }}
                   >
                     Per view
                   </th>
                   <th
                     style={{
-                      background: t.bgSecondary,
-                      borderBottom: `2px solid ${t.borderStrong}`,
-                      color: t.textTertiary,
+                      background: t.bg.surface.secondary.default,
+                      borderBottom: `2px solid ${t.border.strong.default}`,
+                      color: t.text.tertiary.default,
                     }}
                   >
                     Icon
                   </th>
                   <th
                     style={{
-                      background: t.bgSecondary,
-                      borderBottom: `2px solid ${t.borderStrong}`,
-                      color: t.textTertiary,
+                      background: t.bg.surface.secondary.default,
+                      borderBottom: `2px solid ${t.border.strong.default}`,
+                      color: t.text.tertiary.default,
                     }}
                   >
                     Use for
@@ -3409,98 +3357,98 @@ export default function ButtonDocsPage() {
                 </tr>
               </thead>
               <tbody>
-                <tr style={{ background: t.bgPrimary }}>
-                  <td style={{ borderBottom: `1px solid ${t.border}`, color: t.textPrimary }}>
+                <tr style={{ background: t.bg.surface.primary.default }}>
+                  <td style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.primary.default }}>
                     Primary
                   </td>
-                  <td style={{ borderBottom: `1px solid ${t.border}`, color: t.textSecondary }}>High</td>
-                  <td style={{ borderBottom: `1px solid ${t.border}`, color: t.textSecondary }}>
+                  <td style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.secondary.default }}>High</td>
+                  <td style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.secondary.default }}>
                     <span className="emphasis-pill-high">1 only</span>
                   </td>
                   <td
                     className="hierarchy-reference-table__icon"
-                    style={{ borderBottom: `1px solid ${t.border}`, color: t.textSecondary }}
+                    style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.secondary.default }}
                   >
                     <Flame size={14} aria-hidden />
                   </td>
-                  <td style={{ borderBottom: `1px solid ${t.border}`, color: t.textSecondary }}>
+                  <td style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.secondary.default }}>
                     The single most important action. Move forward, confirm, submit.
                   </td>
                 </tr>
-                <tr style={{ background: t.bgPrimary }}>
-                  <td style={{ borderBottom: `1px solid ${t.border}`, color: t.textPrimary }}>
+                <tr style={{ background: t.bg.surface.primary.default }}>
+                  <td style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.primary.default }}>
                     Secondary
                   </td>
-                  <td style={{ borderBottom: `1px solid ${t.border}`, color: t.textSecondary }}>Medium</td>
+                  <td style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.secondary.default }}>Medium</td>
                   <td
                     className="hierarchy-reference-table__per-view"
-                    style={{ borderBottom: `1px solid ${t.border}`, color: t.textSecondary }}
+                    style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.secondary.default }}
                   >
                     Several
                   </td>
                   <td
                     className="hierarchy-reference-table__icon"
-                    style={{ borderBottom: `1px solid ${t.border}`, color: t.textSecondary }}
+                    style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.secondary.default }}
                   >
                     <Layers2 size={14} aria-hidden />
                   </td>
-                  <td style={{ borderBottom: `1px solid ${t.border}`, color: t.textSecondary }}>
+                  <td style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.secondary.default }}>
                     Supporting actions that accompany a primary. Cancel, go back, learn more.
                   </td>
                 </tr>
-                <tr style={{ background: t.bgPrimary }}>
-                  <td style={{ borderBottom: `1px solid ${t.border}`, color: t.textPrimary }}>
+                <tr style={{ background: t.bg.surface.primary.default }}>
+                  <td style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.primary.default }}>
                     Tertiary
                   </td>
-                  <td style={{ borderBottom: `1px solid ${t.border}`, color: t.textSecondary }}>Low</td>
+                  <td style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.secondary.default }}>Low</td>
                   <td
                     className="hierarchy-reference-table__per-view"
-                    style={{ borderBottom: `1px solid ${t.border}`, color: t.textSecondary }}
+                    style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.secondary.default }}
                   >
                     A few
                   </td>
                   <td
                     className="hierarchy-reference-table__icon"
-                    style={{ borderBottom: `1px solid ${t.border}`, color: t.textSecondary }}
+                    style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.secondary.default }}
                   >
                     <Feather size={14} aria-hidden />
                   </td>
-                  <td style={{ borderBottom: `1px solid ${t.border}`, color: t.textSecondary }}>
+                  <td style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.secondary.default }}>
                     Dismissive or low-priority actions. Skip, close, not now.
                   </td>
                 </tr>
-                <tr style={{ background: t.bgPrimary }}>
-                  <td style={{ borderBottom: `1px solid ${t.border}`, color: t.textPrimary }}>Danger</td>
-                  <td style={{ borderBottom: `1px solid ${t.border}`, color: t.textSecondary }}>High</td>
-                  <td style={{ borderBottom: `1px solid ${t.border}`, color: t.textSecondary }}>
+                <tr style={{ background: t.bg.surface.primary.default }}>
+                  <td style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.primary.default }}>Danger</td>
+                  <td style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.secondary.default }}>High</td>
+                  <td style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.secondary.default }}>
                     <span className="emphasis-pill-high">1 only</span>
                   </td>
                   <td
                     className="hierarchy-reference-table__icon"
-                    style={{ borderBottom: `1px solid ${t.border}`, color: t.textSecondary }}
+                    style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.secondary.default }}
                   >
                     <AlertTriangle size={14} aria-hidden />
                   </td>
-                  <td style={{ borderBottom: `1px solid ${t.border}`, color: t.textSecondary }}>
+                  <td style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.secondary.default }}>
                     Irreversible, destructive actions. Delete, remove, reset. Always confirm.
                   </td>
                 </tr>
-                <tr style={{ background: t.bgPrimary }}>
-                  <td style={{ borderBottom: `1px solid ${t.border}`, color: t.textPrimary }}>Link</td>
-                  <td style={{ borderBottom: `1px solid ${t.border}`, color: t.textSecondary }}>Minimal</td>
+                <tr style={{ background: t.bg.surface.primary.default }}>
+                  <td style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.primary.default }}>Link</td>
+                  <td style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.secondary.default }}>Minimal</td>
                   <td
                     className="hierarchy-reference-table__per-view"
-                    style={{ borderBottom: `1px solid ${t.border}`, color: t.textSecondary }}
+                    style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.secondary.default }}
                   >
                     Many
                   </td>
                   <td
                     className="hierarchy-reference-table__icon"
-                    style={{ borderBottom: `1px solid ${t.border}`, color: t.textSecondary }}
+                    style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.secondary.default }}
                   >
                     <ExternalLink size={14} aria-hidden />
                   </td>
-                  <td style={{ borderBottom: `1px solid ${t.border}`, color: t.textSecondary }}>
+                  <td style={{ borderBottom: `1px solid ${t.border.default.default}`, color: t.text.secondary.default }}>
                     Inline navigation. Feels like a hyperlink but triggers an action.
                   </td>
                 </tr>
@@ -3556,14 +3504,12 @@ export default function ButtonDocsPage() {
               </div>
             </div>
 
-            <div style={{ marginTop: 24 }}>
-              <Callout title="The rule of one">
-                In any given view, there should be at most one Primary button and one Danger button.
-                Everything else supports them. When in doubt, ask:{' '}
-                <em>&quot;What&apos;s the single most important thing a user can do right now?&quot;</em> —
-                that gets Primary.
-              </Callout>
-            </div>
+            <Callout title="The rule of one">
+              In any given view, there should be at most one Primary button and one Danger button.
+              Everything else supports them. When in doubt, ask:{' '}
+              <em>&quot;What&apos;s the single most important thing a user can do right now?&quot;</em> —
+              that gets Primary.
+            </Callout>
           </section>
 
           <div className="component-section">
@@ -3573,7 +3519,7 @@ export default function ButtonDocsPage() {
             <p
               style={{
                 fontSize: '14px',
-                color: t.textSecondary,
+                color: t.text.secondary.default,
                 lineHeight: 1.6,
                 marginBottom: '20px',
               }}
@@ -3618,7 +3564,7 @@ export default function ButtonDocsPage() {
             <p
               style={{
                 fontSize: '14px',
-                color: t.textSecondary,
+                color: t.text.secondary.default,
                 lineHeight: 1.6,
                 marginBottom: '20px',
               }}
@@ -3661,7 +3607,7 @@ export default function ButtonDocsPage() {
             <p
               style={{
                 fontSize: '14px',
-                color: t.textSecondary,
+                color: t.text.secondary.default,
                 lineHeight: 1.6,
                 marginBottom: '20px',
               }}
@@ -3673,8 +3619,8 @@ export default function ButtonDocsPage() {
 
             <div
               style={{
-                backgroundColor: t.bgPrimary,
-                backgroundImage: `radial-gradient(circle, ${t.border} 1px, transparent 1px)`,
+                backgroundColor: t.bg.surface.primary.default,
+                backgroundImage: `radial-gradient(circle, ${t.border.default.default} 1px, transparent 1px)`,
                 backgroundSize: '20px 20px',
                 padding: '32px 24px',
                 borderRadius: 'var(--radius-lg)',
@@ -3692,7 +3638,7 @@ export default function ButtonDocsPage() {
                   style={{
                     fontSize: 12,
                     fontWeight: 600,
-                    color: t.textTertiary,
+                    color: t.text.tertiary.default,
                   }}
                 >
                   Primary
@@ -3701,7 +3647,7 @@ export default function ButtonDocsPage() {
                   style={{
                     fontSize: 12,
                     fontWeight: 600,
-                    color: t.textTertiary,
+                    color: t.text.tertiary.default,
                   }}
                 >
                   Secondary
@@ -3710,7 +3656,7 @@ export default function ButtonDocsPage() {
                   style={{
                     fontSize: 12,
                     fontWeight: 600,
-                    color: t.textTertiary,
+                    color: t.text.tertiary.default,
                   }}
                 >
                   Tertiary
@@ -3719,7 +3665,7 @@ export default function ButtonDocsPage() {
               <div
                 style={{
                   height: 1,
-                  background: t.border,
+                  background: t.border.default.default,
                   margin: '12px 0',
                 }}
               />
@@ -3794,7 +3740,7 @@ export default function ButtonDocsPage() {
                 <p
                   style={{
                     fontSize: 12,
-                    color: t.textSecondary,
+                    color: t.text.secondary.default,
                     lineHeight: 1.5,
                     margin: 0,
                   }}
@@ -3804,7 +3750,7 @@ export default function ButtonDocsPage() {
                 <p
                   style={{
                     fontSize: 12,
-                    color: t.textSecondary,
+                    color: t.text.secondary.default,
                     lineHeight: 1.5,
                     margin: 0,
                   }}
@@ -3814,7 +3760,7 @@ export default function ButtonDocsPage() {
                 <p
                   style={{
                     fontSize: 12,
-                    color: t.textSecondary,
+                    color: t.text.secondary.default,
                     lineHeight: 1.5,
                     margin: 0,
                   }}
@@ -3861,7 +3807,7 @@ export default function ButtonDocsPage() {
             <p
               style={{
                 fontSize: '14px',
-                color: t.textSecondary,
+                color: t.text.secondary.default,
                 lineHeight: 1.6,
                 marginBottom: '20px',
               }}
@@ -3872,8 +3818,8 @@ export default function ButtonDocsPage() {
 
             <div
               style={{
-                backgroundColor: t.bgPrimary,
-                backgroundImage: `radial-gradient(circle, ${t.border} 1px, transparent 1px)`,
+                backgroundColor: t.bg.surface.primary.default,
+                backgroundImage: `radial-gradient(circle, ${t.border.default.default} 1px, transparent 1px)`,
                 backgroundSize: '20px 20px',
                 padding: '40px 32px',
                 borderRadius: 'var(--radius-lg)',
@@ -3882,11 +3828,11 @@ export default function ButtonDocsPage() {
             >
               <div
                 style={{
-                  background: t.bgCard,
+                  background: t.bg.surface.primary.default,
                   borderRadius: 14,
                   padding: '32px 40px',
-                  boxShadow: t.shadowCard,
-                  border: `1px solid ${t.border}`,
+                  boxShadow: t.shadow.card,
+                  border: `1px solid ${t.border.default.default}`,
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
@@ -3933,8 +3879,8 @@ export default function ButtonDocsPage() {
                   <button
                     type="button"
                     style={{
-                      background: t.bgTertiary,
-                      color: t.textPrimary,
+                      background: t.bg.surface.tertiary.default,
+                      color: t.text.primary.default,
                       height: 44,
                       padding: '0 18px',
                       borderRadius: 10,
@@ -3949,9 +3895,9 @@ export default function ButtonDocsPage() {
                       flexShrink: 0,
                     }}
                   >
-                    <Download size={18} color={t.textPrimary} strokeWidth={2} aria-hidden />
+                    <Download size={18} color={t.text.primary.default} strokeWidth={2} aria-hidden />
                     Export report
-                    <ChevronDown size={16} color={t.textTertiary} strokeWidth={2} aria-hidden />
+                    <ChevronDown size={16} color={t.text.tertiary.default} strokeWidth={2} aria-hidden />
                   </button>
                   <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
                     <div
@@ -3986,12 +3932,12 @@ export default function ButtonDocsPage() {
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <div
                   style={{
-                    backgroundColor: t.bgPrimary,
-                    backgroundImage: `radial-gradient(circle, ${t.border} 1px, transparent 1px)`,
+                    backgroundColor: t.bg.surface.primary.default,
+                    backgroundImage: `radial-gradient(circle, ${t.border.default.default} 1px, transparent 1px)`,
                     backgroundSize: '20px 20px',
                     padding: '32px 24px',
                     borderRadius: 14,
-                    border: `1px solid ${t.border}`,
+                    border: `1px solid ${t.border.default.default}`,
                   }}
                 >
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-start' }}>
@@ -4005,8 +3951,8 @@ export default function ButtonDocsPage() {
                         key={label}
                         type="button"
                         style={{
-                          background: t.bgTertiary,
-                          color: t.brandText,
+                          background: t.bg.surface.tertiary.default,
+                          color: t.text.brand.default,
                           borderRadius: 10,
                           height: 40,
                           padding: '0 16px',
@@ -4020,14 +3966,14 @@ export default function ButtonDocsPage() {
                           fontFamily: 'var(--font-sans)',
                         }}
                       >
-                        <Icon size={18} color={t.brandText} strokeWidth={2} aria-hidden />
+                        <Icon size={18} color={t.text.brand.default} strokeWidth={2} aria-hidden />
                         {label}
                       </button>
                     ))}
                   </div>
                 </div>
                 <div style={{ fontWeight: 700, fontSize: 15, marginTop: 12 }}>Leading icon examples</div>
-                <p style={{ fontSize: 14, color: t.textSecondary, lineHeight: 1.5, margin: '8px 0 0' }}>
+                <p style={{ fontSize: 14, color: t.text.secondary.default, lineHeight: 1.5, margin: '8px 0 0' }}>
                   Leading icons, placed to the left of the label, reinforce the meaning of the action.
                 </p>
               </div>
@@ -4035,12 +3981,12 @@ export default function ButtonDocsPage() {
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <div
                   style={{
-                    backgroundColor: t.bgPrimary,
-                    backgroundImage: `radial-gradient(circle, ${t.border} 1px, transparent 1px)`,
+                    backgroundColor: t.bg.surface.primary.default,
+                    backgroundImage: `radial-gradient(circle, ${t.border.default.default} 1px, transparent 1px)`,
                     backgroundSize: '20px 20px',
                     padding: '32px 24px',
                     borderRadius: 14,
-                    border: `1px solid ${t.border}`,
+                    border: `1px solid ${t.border.default.default}`,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -4049,8 +3995,8 @@ export default function ButtonDocsPage() {
                   <button
                     type="button"
                     style={{
-                      background: t.bgTertiary,
-                      color: t.textPrimary,
+                      background: t.bg.surface.tertiary.default,
+                      color: t.text.primary.default,
                       borderRadius: 10,
                       height: 40,
                       padding: '0 16px',
@@ -4065,15 +4011,15 @@ export default function ButtonDocsPage() {
                     }}
                   >
                     Sort by
-                    <ChevronsUpDown size={16} color={t.textTertiary} strokeWidth={2} aria-hidden />
+                    <ChevronsUpDown size={16} color={t.text.tertiary.default} strokeWidth={2} aria-hidden />
                   </button>
                   <div
                     style={{
                       marginTop: 8,
-                      background: t.bgElevated,
+                      background: t.bg.surface.primary.default,
                       borderRadius: 10,
-                      border: `1px solid ${t.border}`,
-                      boxShadow: t.shadow,
+                      border: `1px solid ${t.border.default.default}`,
+                      boxShadow: t.shadow.md,
                       padding: '6px 0',
                       width: '100%',
                       maxWidth: 220,
@@ -4090,8 +4036,8 @@ export default function ButtonDocsPage() {
                         style={{
                           padding: '10px 16px',
                           fontSize: 14,
-                          color: t.textPrimary,
-                          background: item.selected ? t.bgTertiary : 'transparent',
+                          color: t.text.primary.default,
+                          background: item.selected ? t.bg.surface.tertiary.default : 'transparent',
                           display: 'flex',
                           alignItems: 'center',
                           gap: 8,
@@ -4104,7 +4050,7 @@ export default function ButtonDocsPage() {
                                 width: 6,
                                 height: 6,
                                 borderRadius: '50%',
-                                background: t.brandText,
+                                background: t.text.brand.default,
                               }}
                               aria-hidden
                             />
@@ -4116,7 +4062,7 @@ export default function ButtonDocsPage() {
                   </div>
                 </div>
                 <div style={{ fontWeight: 700, fontSize: 15, marginTop: 12 }}>Trailing icon example</div>
-                <p style={{ fontSize: 14, color: t.textSecondary, lineHeight: 1.5, margin: '8px 0 0' }}>
+                <p style={{ fontSize: 14, color: t.text.secondary.default, lineHeight: 1.5, margin: '8px 0 0' }}>
                   Trailing icons, placed to the right of the label, hint at interactivity — dropdowns,
                   external links, or next steps.
                 </p>
@@ -4131,7 +4077,7 @@ export default function ButtonDocsPage() {
             <p
               style={{
                 fontSize: '14px',
-                color: t.textSecondary,
+                color: t.text.secondary.default,
                 lineHeight: 1.6,
                 marginBottom: 0,
               }}
@@ -4143,7 +4089,7 @@ export default function ButtonDocsPage() {
             <div
               style={{
                 height: 1,
-                background: t.border,
+                background: t.border.default.default,
                 margin: '32px 0',
               }}
             />
@@ -4158,7 +4104,7 @@ export default function ButtonDocsPage() {
             <p
               style={{
                 fontSize: '14px',
-                color: t.textSecondary,
+                color: t.text.secondary.default,
                 lineHeight: 1.6,
                 marginBottom: 16,
               }}
@@ -4170,7 +4116,7 @@ export default function ButtonDocsPage() {
             <p
               style={{
                 fontSize: '14px',
-                color: t.textSecondary,
+                color: t.text.secondary.default,
                 lineHeight: 1.6,
                 marginBottom: 20,
               }}
@@ -4206,13 +4152,11 @@ export default function ButtonDocsPage() {
               </div>
             </div>
 
-            <div style={{ marginTop: 24 }}>
-              <Callout icon={<Smartphone size={20} />} title="Why 48px?">
-                Apple HIG and Material Design both recommend 44–48px as the minimum touch target. VDS
-                follows the stricter 48px to ensure accessible, error-free interactions across all device
-                sizes and input methods.
-              </Callout>
-            </div>
+            <Callout icon={<Smartphone size={20} />} title="Why 48px?">
+              Apple HIG and Material Design both recommend 44–48px as the minimum touch target. VDS
+              follows the stricter 48px to ensure accessible, error-free interactions across all device
+              sizes and input methods.
+            </Callout>
           </div>
 
           <ButtonUsageStatesSection t={t} isDark={isDark} />
@@ -4872,13 +4816,11 @@ export function SubmitExample() {
               ]}
             />
 
-            <div style={{ marginTop: '32px' }}>
-              <Callout icon={<ShieldCheck size={20} />} title="Accessibility built in">
-                All VDS buttons render as native {'<button>'} elements. They support keyboard navigation (Tab,
-                Enter, Space), have visible focus rings (:focus-visible), and include proper ARIA states for
-                loading (aria-busy) and disabled (aria-disabled) conditions.
-              </Callout>
-            </div>
+            <Callout icon={<ShieldCheck size={20} />} title="Accessibility built in">
+              All VDS buttons render as native {'<button>'} elements. They support keyboard navigation (Tab,
+              Enter, Space), have visible focus rings (:focus-visible), and include proper ARIA states for
+              loading (aria-busy) and disabled (aria-disabled) conditions.
+            </Callout>
           </section>
         </div>
       ) : null}
