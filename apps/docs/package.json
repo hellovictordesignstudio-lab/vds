@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "kill:3002": "bash -c 'for p in $(lsof -t -iTCP:3002 -sTCP:LISTEN 2>/dev/null); do kill -9 \"$p\" 2>/dev/null; done; exit 0'",
+    "dev": "next dev --hostname 0.0.0.0 --port 3002",
+    "dev:clean": "pnpm run kill:3002 && rm -rf .next && next dev --hostname 0.0.0.0 --port 3002",
     "build": "next build",
-    "start": "next start",
+    "start": "next start --port 3002",
     "lint": "next lint"
   },
   "dependencies": {

@@ -138,6 +138,7 @@ export function Callout({ icon, title, children, variant = 'info' }: CalloutProp
   return (
     <div
       style={{
+        margin: '24px 0',
         borderRadius: 12,
         padding: '16px 20px',
         display: 'flex',

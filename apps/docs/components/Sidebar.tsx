@@ -22,6 +22,8 @@ const SECTIONS: NavSection[] = [
       { label: 'Colors', href: '/docs/foundations/colors' },
       { label: 'Typography', href: '/docs/foundations/typography' },
       { label: 'Spacing', href: '/docs/foundations/spacing' },
+      { label: 'Elevation', href: '/docs/foundations/elevation' },
+      { label: 'Layout Grid', href: '/docs/foundations/layout-grid' },
       { label: 'Icons', href: '/docs/foundations/icons' },
     ],
   },

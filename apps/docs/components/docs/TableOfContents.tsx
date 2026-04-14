@@ -6,6 +6,8 @@ export type TocItem = { id: string; label: string; level?: 1 | 2 };
 
 type TableOfContentsProps = {
   items: TocItem[];
+  /** Called before scroll; use to switch tabs/panels so the target id is visible. */
+  onItemClick?: (id: string) => void;
 };
 
 function getResolvedIsDark(): boolean {
@@ -45,7 +47,7 @@ function useIsDark(): boolean {
   return isDark;
 }
 
-export function TableOfContents({ items }: TableOfContentsProps) {
+export function TableOfContents({ items, onItemClick }: TableOfContentsProps) {
   const isDark = useIsDark();
   const [activeId, setActiveId] = useState<string | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
@@ -75,7 +77,10 @@ export function TableOfContents({ items }: TableOfContentsProps) {
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>, id: string) => {
     e.preventDefault();
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    onItemClick?.(id);
+    requestAnimationFrame(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   };
 
   const labelColor = isDark ? 'rgba(255,255,255,0.25)' : 'var(--color-text-tertiary)';
