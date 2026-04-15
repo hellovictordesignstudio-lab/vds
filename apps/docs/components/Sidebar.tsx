@@ -38,6 +38,7 @@ const SECTIONS: NavSection[] = [
       { label: 'Card', href: '/docs/components/card' },
       { label: 'Checkbox', href: '/docs/components/checkbox' },
       { label: 'Modal', href: '/docs/components/modal' },
+      { label: 'Radio', href: '/docs/components/radio' },
       { label: 'Select', href: '/docs/components/select' },
       { label: 'Switch', href: '/docs/components/switch' },
       { label: 'Tabs', href: '/docs/components/tabs' },
