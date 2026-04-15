@@ -8,6 +8,8 @@ type TableOfContentsProps = {
   items: TocItem[];
   /** Called before scroll; use to switch tabs/panels so the target id is visible. */
   onItemClick?: (id: string) => void;
+  /** Optional subheading under “On this page” (e.g. component docs: “Components”). */
+  groupLabel?: string;
 };
 
 function getResolvedIsDark(): boolean {
@@ -47,7 +49,7 @@ function useIsDark(): boolean {
   return isDark;
 }
 
-export function TableOfContents({ items, onItemClick }: TableOfContentsProps) {
+export function TableOfContents({ items, onItemClick, groupLabel }: TableOfContentsProps) {
   const isDark = useIsDark();
   const [activeId, setActiveId] = useState<string | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
@@ -118,6 +120,23 @@ export function TableOfContents({ items, onItemClick }: TableOfContentsProps) {
       >
         On this page
       </span>
+      {groupLabel ? (
+        <span
+          style={{
+            fontSize: 10,
+            fontWeight: 800,
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+            color: labelColor,
+            marginBottom: 10,
+            marginTop: -8,
+            display: 'block',
+            fontFamily: 'inherit',
+          }}
+        >
+          {groupLabel}
+        </span>
+      ) : null}
       <div
         style={{
           borderLeft: `1px solid ${trackBorder}`,

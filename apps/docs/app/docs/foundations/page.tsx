@@ -5,6 +5,7 @@ const FOUNDATIONS: { href: string; label: string; description: string }[] = [
   { href: '/docs/foundations/typography', label: 'Typography', description: 'Type scale, families, and usage rules.' },
   { href: '/docs/foundations/spacing', label: 'Spacing', description: '8px grid, scale, and semantic aliases.' },
   { href: '/docs/foundations/elevation', label: 'Elevation & Radius', description: 'Shadow depth, corner radius, and pairing.' },
+  { href: '/docs/foundations/motion', label: 'Motion', description: 'Duration, easing, and reduced-motion rules.' },
   { href: '/docs/foundations/layout-grid', label: 'Layout grid', description: 'Columns, gutters, and breakpoints.' },
   { href: '/docs/foundations/icons', label: 'Icons', description: 'Stroke, sizing, and Lucide usage.' },
 ];

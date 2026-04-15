@@ -23,6 +23,7 @@ const SECTIONS: NavSection[] = [
       { label: 'Typography', href: '/docs/foundations/typography' },
       { label: 'Spacing', href: '/docs/foundations/spacing' },
       { label: 'Elevation', href: '/docs/foundations/elevation' },
+      { label: 'Motion', href: '/docs/foundations/motion' },
       { label: 'Layout Grid', href: '/docs/foundations/layout-grid' },
       { label: 'Icons', href: '/docs/foundations/icons' },
     ],
@@ -40,7 +41,7 @@ const SECTIONS: NavSection[] = [
       { label: 'Select', href: '/docs/components/select' },
       { label: 'Switch', href: '/docs/components/switch' },
       { label: 'Tabs', href: '/docs/components/tabs' },
-      { label: 'TextInput', href: '/docs/components/textinput' },
+      { label: 'Text Input', href: '/docs/components/text-input' },
       { label: 'Toast', href: '/docs/components/toast' },
       { label: 'Tooltip', href: '/docs/components/tooltip' },
     ],
@@ -73,7 +74,10 @@ export default function Sidebar() {
     <aside className="docs-sidebar">
       <nav className="docs-sidebar__nav" aria-label="Documentation">
         {SECTIONS.map((section) => (
-          <div key={section.title} className="docs-sidebar__section">
+          <div
+            key={section.title}
+            className={`docs-sidebar__section${section.title === 'Components' ? ' docs-sidebar__section--components' : ''}`}
+          >
             <div className="docs-sidebar__section-label">{section.title}</div>
             <ul className="docs-sidebar__list">
               {section.items.map((item) => {
