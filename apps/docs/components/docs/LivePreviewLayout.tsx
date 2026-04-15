@@ -3,6 +3,15 @@
 import type { ReactNode } from 'react';
 import type { VDSTheme } from '@/lib/theme';
 
+/** Split segmented options into rows (max `size` per row) so each row is its own flex line. */
+function chunkSegmentOptions<T>(arr: readonly T[], size: number): T[][] {
+  const chunks: T[][] = [];
+  for (let i = 0; i < arr.length; i += size) {
+    chunks.push(arr.slice(i, i + size));
+  }
+  return chunks;
+}
+
 /**
  * Canonical component docs live preview: dotted canvas (left) + 280px control panel (right).
  * Do not vary this layout across component doc pages.
@@ -89,6 +98,8 @@ export function LivePreviewSegmentRow<T extends string>({
   onChange: (v: T) => void;
   showDivider?: boolean;
 }) {
+  const chunkSize = options.length === 4 ? 2 : 3;
+
   return (
     <div>
       <div
@@ -106,35 +117,40 @@ export function LivePreviewSegmentRow<T extends string>({
       <div
         style={{
           display: 'flex',
-          flexWrap: 'wrap',
-          gap: 6,
-          background: t.bg.surface.secondary.default,
+          flexDirection: 'column',
+          gap: 4,
+          background: t.bg.surface.tertiary.default,
           borderRadius: 10,
           padding: 4,
         }}
       >
-        {options.map((opt) => (
-          <button
-            key={String(opt)}
-            type="button"
-            onClick={() => onChange(opt)}
-            style={{
-              flex: 1,
-              padding: '6px 10px',
-              borderRadius: 7,
-              border: 'none',
-              fontSize: 13,
-              fontWeight: value === opt ? 700 : 400,
-              cursor: 'pointer',
-              background: value === opt ? t.bg.surface.primary.default : 'transparent',
-              color: value === opt ? t.text.primary.default : t.text.secondary.default,
-              boxShadow: value === opt ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
-              transition: 'all 150ms',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {opt}
-          </button>
+        {chunkSegmentOptions(options, chunkSize).map((row, rowIdx) => (
+          <div key={rowIdx} style={{ display: 'flex', gap: 4 }}>
+            {row.map((opt) => (
+              <button
+                key={String(opt)}
+                type="button"
+                onClick={() => onChange(opt)}
+                style={{
+                  flex: 1,
+                  padding: '7px 10px',
+                  borderRadius: 7,
+                  border: 'none',
+                  fontSize: 13,
+                  fontWeight: value === opt ? 700 : 500,
+                  cursor: 'pointer',
+                  textAlign: 'center',
+                  whiteSpace: 'nowrap',
+                  background: value === opt ? t.bg.surface.primary.default : 'transparent',
+                  color: value === opt ? t.text.primary.default : t.text.secondary.default,
+                  boxShadow: value === opt ? '0 1px 3px rgba(0,0,0,0.10)' : 'none',
+                  transition: 'all 150ms',
+                }}
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
         ))}
       </div>
       {showDivider ? <div style={{ height: 1, background: t.border.default.default, marginTop: 16 }} /> : null}
