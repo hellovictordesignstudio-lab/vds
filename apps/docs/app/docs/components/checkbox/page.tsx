@@ -17,6 +17,7 @@ import { CodeBlock } from '../../../../components/docs/CodeBlock';
 import { ComponentTabs } from '../../../../components/docs/ComponentTabs';
 import { PropsTable } from '../../../../components/docs/PropsTable';
 import { TableOfContents } from '@/components/docs/TableOfContents';
+import { LivePreviewSegmentRow, LivePreviewShell } from '@/components/docs/LivePreviewLayout';
 
 const TABS = ['Overview', 'Usage', 'Content', 'Code', 'Changelog'] as const;
 
@@ -62,45 +63,6 @@ function chipStyleB(t: VDSTheme, overrides?: CSSProperties): CSSProperties {
     width: 'fit-content',
     ...overrides,
   };
-}
-
-type SegOpt<T extends string> = { value: T; label: string };
-
-function SegmentedControl<T extends string>({
-  options,
-  value,
-  onChange,
-  'aria-label': ariaLabel,
-}: {
-  options: readonly SegOpt<T>[];
-  value: T;
-  onChange: (v: T) => void;
-  'aria-label'?: string;
-}) {
-  return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }} role="group" aria-label={ariaLabel}>
-      {options.map((opt) => (
-        <button
-          key={opt.value}
-          type="button"
-          onClick={() => onChange(opt.value)}
-          style={{
-            padding: '6px 12px',
-            fontSize: 12,
-            fontWeight: 600,
-            borderRadius: 8,
-            border: `1px solid ${value === opt.value ? 'var(--color-border-brand)' : 'var(--color-border)'}`,
-            background: value === opt.value ? 'var(--color-brand-subtle)' : 'transparent',
-            color: value === opt.value ? 'var(--color-brand-text)' : 'var(--color-text-secondary)',
-            cursor: 'pointer',
-            fontFamily: 'inherit',
-          }}
-        >
-          {opt.label}
-        </button>
-      ))}
-    </div>
-  );
 }
 
 function CbBox({
@@ -155,13 +117,11 @@ function LiveCheckboxPreview({
   size,
   state,
   indeterminate,
-  appearance,
 }: {
   t: VDSTheme;
   size: CbSize;
   state: PreviewState;
   indeterminate: 'on' | 'off';
-  appearance: 'light' | 'dark';
 }) {
   const s = CB_SIZE[size];
   const [checked, setChecked] = useState<string[]>(['Design review']);
@@ -240,40 +200,7 @@ function LiveCheckboxPreview({
     </div>
   );
 
-  if (appearance === 'dark') {
-    return (
-      <div
-        data-theme="dark"
-        style={{
-          width: '100%',
-          minHeight: 200,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: 48,
-          background: '#0F1117',
-        }}
-      >
-        {inner}
-      </div>
-    );
-  }
-
-  return (
-    <div
-      style={{
-        width: '100%',
-        minHeight: 200,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 48,
-        background: t.bg.surface.secondary.default,
-      }}
-    >
-      {inner}
-    </div>
-  );
+  return inner;
 }
 
 function SelectAllIllustration({ t }: { t: VDSTheme }) {
@@ -546,87 +473,50 @@ export default function CheckboxDocsPage() {
             <h2 className="section-title" style={{ marginBottom: 16 }}>
               Live preview
             </h2>
-            <div
-              style={{
-                background: t.bg.surface.secondary.default,
-                borderRadius: 14,
-                border: `1px solid ${t.border.default.default}`,
-                overflow: 'hidden',
-              }}
+            <LivePreviewShell
+              t={t}
+              canvasIsDark={appearance === 'dark'}
+              controls={
+                <>
+                  <LivePreviewSegmentRow
+                    t={t}
+                    label="Size"
+                    options={['sm', 'md', 'lg']}
+                    value={previewSize}
+                    onChange={setPreviewSize}
+                  />
+                  <LivePreviewSegmentRow
+                    t={t}
+                    label="State"
+                    options={['default', 'disabled', 'error']}
+                    value={previewState}
+                    onChange={setPreviewState}
+                  />
+                  <LivePreviewSegmentRow
+                    t={t}
+                    label="Indeterminate"
+                    options={['off', 'on']}
+                    value={indeterminate}
+                    onChange={setIndeterminate}
+                  />
+                  <LivePreviewSegmentRow
+                    t={t}
+                    label="Appearance"
+                    options={['Light', 'Dark']}
+                    value={appearance === 'dark' ? 'Dark' : 'Light'}
+                    onChange={(v) => setAppearance(v === 'Dark' ? 'dark' : 'light')}
+                    showDivider={false}
+                  />
+                </>
+              }
             >
               <LiveCheckboxPreview
                 t={previewT}
                 size={previewSize}
                 state={previewState}
                 indeterminate={indeterminate}
-                appearance={appearance}
               />
-              <div
-                style={{
-                  background: t.bg.surface.primary.default,
-                  borderTop: `1px solid ${t.border.default.default}`,
-                  padding: 20,
-                  display: 'flex',
-                  gap: 24,
-                  flexWrap: 'wrap',
-                }}
-              >
-                <div>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: t.text.tertiary.default, marginBottom: 8 }}>Size</div>
-                  <SegmentedControl
-                    aria-label="Size"
-                    options={[
-                      { value: 'sm', label: 'sm' },
-                      { value: 'md', label: 'md' },
-                      { value: 'lg', label: 'lg' },
-                    ]}
-                    value={previewSize}
-                    onChange={setPreviewSize}
-                  />
-                </div>
-                <div>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: t.text.tertiary.default, marginBottom: 8 }}>State</div>
-                  <SegmentedControl
-                    aria-label="State"
-                    options={[
-                      { value: 'default', label: 'default' },
-                      { value: 'disabled', label: 'disabled' },
-                      { value: 'error', label: 'error' },
-                    ]}
-                    value={previewState}
-                    onChange={setPreviewState}
-                  />
-                </div>
-                <div>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: t.text.tertiary.default, marginBottom: 8 }}>
-                    Indeterminate
-                  </div>
-                  <SegmentedControl
-                    aria-label="Indeterminate"
-                    options={[
-                      { value: 'off', label: 'off' },
-                      { value: 'on', label: 'on' },
-                    ]}
-                    value={indeterminate}
-                    onChange={setIndeterminate}
-                  />
-                </div>
-                <div>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: t.text.tertiary.default, marginBottom: 8 }}>
-                    Appearance
-                  </div>
-                  <SegmentedControl
-                    aria-label="Appearance"
-                    options={[
-                      { value: 'light', label: 'Light' },
-                      { value: 'dark', label: 'Dark' },
-                    ]}
-                    value={appearance}
-                    onChange={setAppearance}
-                  />
-                </div>
-              </div>
-            </div>
+            </LivePreviewShell>
           </section>
 
           <section id="principles-cb" style={{ marginBottom: 48 }}>
