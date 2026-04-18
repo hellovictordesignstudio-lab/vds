@@ -40,7 +40,7 @@ export function LivePreviewShell({
         style={{
           flex: 1,
           minHeight: 360,
-          background: canvasIsDark ? '#0F1117' : t.bg.surface.secondary.default,
+          backgroundColor: canvasIsDark ? '#0F1117' : t.bg.surface.secondary.default,
           backgroundImage: `radial-gradient(circle, ${
             canvasIsDark ? 'rgba(255,255,255,0.06)' : t.border.default.default
           } 1px, transparent 1px)`,
@@ -69,7 +69,7 @@ export function LivePreviewShell({
           width: 280,
           minWidth: 280,
           borderLeft: `1px solid ${t.border.default.default}`,
-          background: t.bg.surface.primary.default,
+          backgroundColor: t.bg.surface.primary.default,
           padding: '24px 20px',
           display: 'flex',
           flexDirection: 'column',
