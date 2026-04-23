@@ -17,6 +17,14 @@ const SECTIONS: NavSection[] = [
     ],
   },
   {
+    title: 'Applications',
+    items: [
+      { label: 'Dashboard', href: '/docs/applications/dashboard' },
+      { label: 'Settings', href: '/docs/applications/settings' },
+      { label: 'Trading App', href: '/docs/applications/trading-app' },
+    ],
+  },
+  {
     title: 'Foundations',
     items: [
       { label: 'Colors', href: '/docs/foundations/colors' },
@@ -43,8 +51,11 @@ const SECTIONS: NavSection[] = [
       { label: 'Command Palette', href: '/docs/components/command-palette' },
       { label: 'File Upload', href: '/docs/components/file-upload' },
       { label: 'Date Picker', href: '/docs/components/date-picker' },
+      { label: 'Calendar', href: '/docs/components/calendar' },
+      { label: 'Charts', href: '/docs/components/charts' },
       { label: 'Kbd', href: '/docs/components/kbd' },
       { label: 'Stat Card', href: '/docs/components/stat-card' },
+      { label: 'Trading', href: '/docs/components/trading' },
       { label: 'Pagination', href: '/docs/components/pagination' },
       { label: 'Breadcrumb', href: '/docs/components/breadcrumb' },
       { label: 'Navigation', href: '/docs/components/navigation' },

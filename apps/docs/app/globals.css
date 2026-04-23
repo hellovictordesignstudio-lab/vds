@@ -686,6 +686,11 @@ nav.top-nav,
   max-width: 900px;
 }
 
+.docs-main:has(.vds-docs-landing) {
+  max-width: none;
+  padding: 0;
+}
+
 .docs-main:has(.docs-page-with-toc) {
   max-width: 1124px;
 }

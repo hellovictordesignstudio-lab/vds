@@ -15,7 +15,8 @@
     "next": "^15.0.0",
     "next-themes": "^0.3.0",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "recharts": "^2.15.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
